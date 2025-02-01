@@ -94,43 +94,21 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return true;
 }
 
-// inspired/lifted from https://github.com/Adam13531/qmk_firmware/blob/master/keyboards/crkbd/keymaps/adam/keymap.c#L171
-void set_colour_split(uint8_t key_code, uint8_t r, uint8_t g, uint8_t b) {
-    bool is_left = is_keyboard_left();
-    bool left_is_master = (is_keyboard_master() && is_left) || (!is_keyboard_master() && !is_left);
-
-    if ((is_left && key_code >= NUM_LEDS_PER_SIDE) || (!is_left && key_code < NUM_LEDS_PER_SIDE)) {
-        return;
-    }
-
-    if (left_is_master && key_code >= NUM_LEDS_PER_SIDE)
-        key_code -= NUM_LEDS_PER_SIDE_ON_NORMAL_CORNE;
-    else if (!left_is_master && key_code < NUM_LEDS_PER_SIDE)
-        key_code += NUM_LEDS_PER_SIDE_ON_NORMAL_CORNE;
-    rgb_matrix_set_color(key_code, r, g, b);
-}
-
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     if (is_gui_held()) {
         rgb_matrix_set_color(11, RGB_WHITE);
-        rgb_matrix_set_color(38, RGB_WHITE);
     } else {
         rgb_matrix_set_color(11, RGB_BLACK);
-        rgb_matrix_set_color(38, RGB_BLACK);
     }
     if (is_alt_held()) {
         rgb_matrix_set_color(16, RGB_WHITE);
-        rgb_matrix_set_color(43, RGB_WHITE);
     } else {
         rgb_matrix_set_color(16, RGB_BLACK);
-        rgb_matrix_set_color(43, RGB_BLACK);
     }
     if (is_ctrl_held()) {
         rgb_matrix_set_color(19, RGB_WHITE);
-        rgb_matrix_set_color(46, RGB_WHITE);
     } else {
         rgb_matrix_set_color(19, RGB_BLACK);
-        rgb_matrix_set_color(46, RGB_BLACK);
     }
     return false;
 }
