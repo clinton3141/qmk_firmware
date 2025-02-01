@@ -135,3 +135,28 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     return false;
 }
 #endif
+
+#ifdef OLED_ENABLE
+
+void render_modifiers(void) {
+    uint8_t mods = get_mods();
+    uint8_t oneshot = get_oneshot_mods();
+
+    // TODO: use pictures instead of text.
+    // @see https://joric.github.io/qle/
+    bool gui_active = mods & MOD_MASK_GUI || oneshot & MOD_MASK_GUI;
+    bool alt_active = mods & MOD_MASK_ALT || oneshot & MOD_MASK_ALT;
+    bool ctrl_active = mods & MOD_MASK_CTRL || oneshot & MOD_MASK_CTRL;
+    bool shift_active = mods & MOD_MASK_SHIFT || oneshot & MOD_MASK_SHIFT;
+    oled_write_P(PSTR("g\n"), gui_active);
+    oled_write_P(PSTR("a\n"), alt_active);
+    oled_write_P(PSTR("c\n"), ctrl_active);
+    oled_write_P(PSTR("s\n"), shift_active);
+}
+
+bool oled_task_user(void) {
+    oled_clear();
+    render_modifiers();
+    return false;
+}
+#endif
