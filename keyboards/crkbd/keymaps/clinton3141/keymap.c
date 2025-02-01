@@ -18,6 +18,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include QMK_KEYBOARD_H
 
+enum custom_keycodes {
+    CM_ARR = SAFE_RANGE,
+};
+
 
 enum layers {
     _BASE,
@@ -34,7 +38,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
        KC_TAB,    KC_A,    KC_R,    KC_S,    KC_T,    KC_G,                         KC_M,    KC_N,    KC_E,    KC_I,   KC_O,  KC_QUOT,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_GRAVE,    KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,                         KC_K,    KC_H, KC_COMM,  KC_DOT, KC_SLSH,  KC_BSLS,
+     KC_GRAVE,    KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,                         KC_K,    KC_H, KC_COMM,  KC_DOT, KC_SLSH,  KC_BSLS,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                         LCTL(KC_S), KC_SPC, MO(_MODS_NAV),     MO(_NUMS), KC_RSFT, KC_ENT
                                       //`--------------------------'  `--------------------------'
@@ -45,9 +49,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
       _______, KC_EXLM,   KC_AT, KC_HASH,  KC_DLR, KC_PERC,                      KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, _______,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0, XXXXXXX,
+      _______,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0,   KC_GT,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______, XXXXXXX, XXXXXXX, KC_LBRC, KC_RBRC, KC_MINS,                       KC_EQL, KC_LCBR, KC_RCBR, XXXXXXX, XXXXXXX, XXXXXXX,
+      _______, KC_UNDS, KC_MINS, KC_PLUS,  KC_EQL,  CM_ARR,                      XXXXXXX, KC_LCBR, KC_RCBR, KC_LBRC, KC_RBRC,   KC_LT,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           _______, _______, _______,     _______,   _______, _______
                                       //`--------------------------'  `--------------------------'
@@ -57,9 +61,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
     _______,KC_KB_MUTE,KC_KB_VOLUME_DOWN,KC_KB_VOLUME_UP,KC_MEDIA_PLAY_PAUSE,XXXXXXX,   KC_ESC,KC_MEDIA_PREV_TRACK,KC_UP,KC_MEDIA_NEXT_TRACK,XXXXXXX,_______,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-    _______,XXXXXXX,OSM(MOD_LCTL),OSM(MOD_LALT),OSM(MOD_LGUI),XXXXXXX,           KC_TAB, KC_LEFT, KC_DOWN,KC_RIGHT, XXXXXXX, XXXXXXX,
+    _______,XXXXXXX,OSM(MOD_LCTL),OSM(MOD_LALT),OSM(MOD_LGUI),XXXXXXX,           KC_TAB, KC_LEFT, KC_DOWN, KC_RIGHT,    KC_0,  KC_EQL,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-    XXXXXXX,LCMD(KC_Z),LCMD(KC_X),LCMD(KC_C),XXXXXXX,LCMD(KC_V),                 KC_GRAVE, KC_LCBR, KC_RCBR, XXXXXXX, XXXXXXX, XXXXXXX,
+    XXXXXXX,LCMD(KC_Z),LCMD(KC_X),LCMD(KC_C),XXXXXXX,LCMD(KC_V),                KC_GRAVE, KC_LCBR, KC_RCBR, KC_LBRC, KC_RBRC, KC_MINS,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           _______, _______, _______,     _______,   _______, _______
                                       //`--------------------------'  `--------------------------'
@@ -76,6 +80,19 @@ bool is_shift_held(void) { return (get_oneshot_mods() & MOD_BIT(KC_LSFT)) || (ge
 bool is_ctrl_held(void) { return (get_oneshot_mods() & MOD_BIT(KC_LCTL)) || (get_oneshot_mods() & MOD_BIT(KC_RCTL)); }
 bool is_gui_held(void) { return (get_oneshot_mods() & MOD_BIT(KC_LGUI)) || (get_oneshot_mods() & MOD_BIT(KC_RGUI)); }
 bool is_alt_held(void) { return (get_oneshot_mods() & MOD_BIT(KC_LALT)) || (get_oneshot_mods() & MOD_BIT(KC_RALT)); }
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (record->event.pressed) {
+        switch (keycode) {
+        case CM_ARR:
+            if (record->event.pressed) {
+                SEND_STRING("->");
+            }
+            break;
+        }
+    }
+    return true;
+}
 
 // inspired/lifted from https://github.com/Adam13531/qmk_firmware/blob/master/keyboards/crkbd/keymaps/adam/keymap.c#L171
 void set_colour_split(uint8_t key_code, uint8_t r, uint8_t g, uint8_t b) {
