@@ -72,14 +72,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 #ifdef RGB_MATRIX_ENABLE
 
-#define NUM_LEDS_PER_SIDE 24
-
-#define NUM_LEDS_PER_SIDE_ON_NORMAL_CORNE 27
-
-bool is_shift_held(void) { return (get_oneshot_mods() & MOD_BIT(KC_LSFT)) || (get_oneshot_mods() & MOD_BIT(KC_RSFT)); }
-bool is_ctrl_held(void) { return (get_oneshot_mods() & MOD_BIT(KC_LCTL)) || (get_oneshot_mods() & MOD_BIT(KC_RCTL)); }
-bool is_gui_held(void) { return (get_oneshot_mods() & MOD_BIT(KC_LGUI)) || (get_oneshot_mods() & MOD_BIT(KC_RGUI)); }
-bool is_alt_held(void) { return (get_oneshot_mods() & MOD_BIT(KC_LALT)) || (get_oneshot_mods() & MOD_BIT(KC_RALT)); }
+bool is_ctrl_held(void) { return get_oneshot_mods() & MOD_MASK_CTRL; }
+bool is_alt_held(void) { return get_oneshot_mods() & MOD_MASK_ALT; }
+bool is_gui_held(void) { return get_oneshot_mods() & MOD_MASK_GUI; }
+bool is_shift_held(void) { return get_oneshot_mods() & MOD_MASK_SHIFT; }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (record->event.pressed) {
@@ -110,6 +106,11 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     } else {
         rgb_matrix_set_color(19, RGB_BLACK);
     }
+    if (is_shift_held()) {
+        rgb_matrix_set_color(22, RGB_WHITE);
+    } else {
+        rgb_matrix_set_color(22, RGB_BLACK);
+    }
     return false;
 }
 #endif
@@ -120,10 +121,10 @@ bool oled_task_user(void) {
     uint8_t mods = get_mods();
     uint8_t oneshot = get_oneshot_mods();
 
-    bool gui_active = mods & MOD_MASK_GUI || oneshot & MOD_MASK_GUI;
-    bool alt_active = mods & MOD_MASK_ALT || oneshot & MOD_MASK_ALT;
-    bool ctrl_active = mods & MOD_MASK_CTRL || oneshot & MOD_MASK_CTRL;
-    bool shift_active = mods & MOD_MASK_SHIFT || oneshot & MOD_MASK_SHIFT;
+    bool gui_active = (mods | oneshot) & MOD_MASK_GUI;
+    bool alt_active = (mods | oneshot) & MOD_MASK_ALT;
+    bool ctrl_active = (mods | oneshot) & MOD_MASK_CTRL;
+    bool shift_active = (mods | oneshot) & MOD_MASK_SHIFT;
     bool any_active = gui_active || alt_active || ctrl_active || shift_active;
 
     if (!any_active) {
