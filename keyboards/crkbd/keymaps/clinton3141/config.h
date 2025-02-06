@@ -24,6 +24,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     #define OLED_BRIGHTNESS 1
 #endif
 
+#define MOUSEKEY_MAX_SPEED 2
+#define MOUSEKEY_TIME_TO_MAX 20
+
 //#define USE_MATRIX_I2C
 
 //#define QUICK_TAP_TERM 0

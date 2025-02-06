@@ -20,13 +20,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 enum custom_keycodes {
     CM_ARR = SAFE_RANGE,
+    CM_SHFT_MOUSE,
 };
-
 
 enum layers {
     _BASE,
     _NUMS,
-    _MODS_NAV
+    _MODS_NAV,
+    _MOUSE,
 };
 
 #define MOD_ACTIVE_COLOUR 0x16, 0x16, 0x00
@@ -40,7 +41,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
      KC_GRAVE,    KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,                         KC_K,    KC_H, KC_COMM,  KC_DOT, KC_SLSH,  KC_BSLS,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                        KC_LCTL, KC_SPC, MO(_MODS_NAV),     MO(_NUMS), KC_RSFT, KC_ENT
+                                        KC_LCTL, KC_SPC, MO(_MODS_NAV),     MO(_NUMS), CM_SHFT_MOUSE, KC_ENT
                                       //`--------------------------'  `--------------------------'
 
   ),
@@ -67,6 +68,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           _______, _______, _______,     _______,   _______, _______
                                       //`--------------------------'  `--------------------------'
+  ),
+    [_MOUSE] = LAYOUT_split_3x6_3(
+  //,-----------------------------------------------------.                    ,-----------------------------------------------------.
+      _______, XXXXXXX, XXXXXXX,   MS_UP, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      XXXXXXX, XXXXXXX, MS_LEFT, MS_DOWN, MS_RGHT, MS_BTN1,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, MS_BTN2,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                          _______, _______, _______,     _______,   _______, _______
+                                      //`--------------------------'  `--------------------------'
   )
 };
 
@@ -78,14 +90,33 @@ bool is_gui_held(void) { return get_oneshot_mods() & MOD_MASK_GUI; }
 bool is_shift_held(void) { return get_oneshot_mods() & MOD_MASK_SHIFT; }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    if (record->event.pressed) {
-        switch (keycode) {
+    static uint16_t last_tap_time = 0;
+    static bool is_shift_held = false;
+
+    switch (keycode) {
         case CM_ARR:
             if (record->event.pressed) {
                 SEND_STRING("->");
             }
             break;
-        }
+        case CM_SHFT_MOUSE:
+            if (record->event.pressed) {
+                if (timer_elapsed(last_tap_time) < TAPPING_TERM) {
+                    layer_on(_MOUSE);
+                } else {
+                    register_code(KC_LSFT);
+                    is_shift_held = true;
+                }
+                last_tap_time = timer_read();
+            } else {
+                if (is_shift_held) {
+                    unregister_code(KC_LSFT);
+                    is_shift_held = false;
+                } else {
+                    layer_off(_MOUSE);
+                }
+            }
+            return false;
     }
     return true;
 }
@@ -125,7 +156,8 @@ bool oled_task_user(void) {
     bool alt_active = (mods | oneshot) & MOD_MASK_ALT;
     bool ctrl_active = (mods | oneshot) & MOD_MASK_CTRL;
     bool shift_active = (mods | oneshot) & MOD_MASK_SHIFT;
-    bool any_active = gui_active || alt_active || ctrl_active || shift_active;
+    bool mouse_active = layer_state_is(_MOUSE);
+    bool any_active = gui_active || alt_active || ctrl_active || shift_active || mouse_active;
 
     if (!any_active) {
         oled_off();
@@ -141,6 +173,11 @@ bool oled_task_user(void) {
     oled_write_P(PSTR("     OPT         \n"), alt_active);
     oled_write_P(PSTR("         CMD     \n"), gui_active);
     oled_write_P(PSTR("             SFT \n"), shift_active);
+
+    // TODO: this overwrites CTL. Ideally it should go somewhere else.
+    if (layer_state_is(_MOUSE)) {
+        oled_write_P(PSTR("MOUSE\n"), false);
+    }
     return false;
 }
 #endif
