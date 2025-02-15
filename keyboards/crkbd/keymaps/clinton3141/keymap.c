@@ -84,10 +84,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 #ifdef RGB_MATRIX_ENABLE
 
-bool is_ctrl_held(void) { return get_oneshot_mods() & MOD_MASK_CTRL; }
-bool is_alt_held(void) { return get_oneshot_mods() & MOD_MASK_ALT; }
-bool is_gui_held(void) { return get_oneshot_mods() & MOD_MASK_GUI; }
-bool is_shift_held(void) { return get_oneshot_mods() & MOD_MASK_SHIFT; }
+bool is_ctrl_held(void) { return (get_oneshot_mods() | get_mods()) & MOD_MASK_CTRL; }
+bool is_alt_held(void) { return (get_oneshot_mods() | get_mods()) & MOD_MASK_ALT; }
+bool is_gui_held(void) { return (get_oneshot_mods() | get_mods()) & MOD_MASK_GUI; }
+bool is_shift_held(void) { return (get_oneshot_mods() | get_mods()) & MOD_MASK_SHIFT; }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     static uint16_t last_tap_time = 0;
@@ -122,6 +122,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 }
 
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+    if (layer_state_is(_MOUSE)) {
+        rgb_matrix_set_color(11, RGB_CYAN);
+        rgb_matrix_set_color(16, RGB_CYAN);
+        rgb_matrix_set_color(17, RGB_CYAN);
+        rgb_matrix_set_color(19, RGB_CYAN);
+        return false;
+    } else {
+        rgb_matrix_set_color(11, RGB_BLACK);
+        rgb_matrix_set_color(16, RGB_BLACK);
+        rgb_matrix_set_color(17, RGB_BLACK);
+        rgb_matrix_set_color(19, RGB_BLACK);
+    }
     if (is_gui_held()) {
         rgb_matrix_set_color(11, RGB_WHITE);
     } else {
