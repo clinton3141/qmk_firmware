@@ -22,6 +22,7 @@ enum layers {
     _BASE,
     _NUMS,
     _MODS_NAV,
+    _MEDIA,
 };
 
 #define MOD_ACTIVE_COLOUR 0x16, 0x16, 0x00
@@ -35,7 +36,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
      KC_GRAVE,    KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,                         KC_K,    KC_H, KC_COMM,  KC_DOT, KC_SLSH,  KC_BSLS,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                        KC_BACKSPACE, KC_SPC, MO(_MODS_NAV),     MO(_NUMS), KC_LSFT, KC_ENT
+                                        MO(_MEDIA), KC_SPC, MO(_MODS_NAV),     LT(_NUMS, KC_ENT), KC_LSFT, XXXXXXX
                                       //`--------------------------'  `--------------------------'
 
   ),
@@ -53,8 +54,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
     [_MODS_NAV] = LAYOUT_split_3x6_3(
-  //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-    _______,KC_KB_MUTE,KC_KB_VOLUME_DOWN,KC_KB_VOLUME_UP,KC_MEDIA_PLAY_PAUSE,XXXXXXX,   KC_ESC,KC_MEDIA_PREV_TRACK,KC_UP,KC_MEDIA_NEXT_TRACK,XXXXXXX,_______,
+//,-----------------------------------------------------.                    ,-----------------------------------------------------.
+    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_BACKSPACE,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
     _______,OSM(MOD_LSFT),OSM(MOD_LCTL),OSM(MOD_LALT),OSM(MOD_LGUI),XXXXXXX,           KC_TAB, KC_LEFT, KC_DOWN, KC_RIGHT,    KC_0,  KC_EQL,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -63,6 +64,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                           _______, _______, _______,     _______,   _______, _______
                                       //`--------------------------'  `--------------------------'
   )
+,
+    [_MEDIA] = LAYOUT_split_3x6_3(
+//,-----------------------------------------------------.                    ,-----------------------------------------------------.
+        _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
+//|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+        _______, XXXXXXX, XXXXXXX, KC_MPRV, KC_MPLY, KC_MNXT,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
+//|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+        _______, XXXXXXX, XXXXXXX, KC_VOLD, KC_MUTE, KC_VOLU,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
+//|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                                                                _______, _______, _______,     _______, _______, _______
+                                                                        //`--------------------------'  `--------------------------'
+)
 };
 
 #ifdef RGB_MATRIX_ENABLE
