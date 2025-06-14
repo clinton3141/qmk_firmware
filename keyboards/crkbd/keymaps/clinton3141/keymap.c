@@ -88,6 +88,35 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 )
 };
 
+#ifdef RGB_MATRIX_ENABLE
+
+bool is_gui_held(void) {
+    return (get_oneshot_mods() | get_mods()) & MOD_MASK_GUI;
+}
+
+void keyboard_post_init_user(void) {
+    // Set RGB matrix to solid color mode with all LEDs off
+    rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
+    rgb_matrix_sethsv_noeeprom(0, 0, 0); // Black
+}
+
+bool rgb_matrix_indicators_user(void) {
+    // Turn off all LEDs first
+    for (uint8_t i = 0; i < RGB_MATRIX_LED_COUNT; i++) {
+        rgb_matrix_set_color(i, RGB_BLACK);
+    }
+
+    // Light up keys 11 and 38 when CMD is held
+    if (is_gui_held()) {
+        rgb_matrix_set_color(11, RGB_WHITE); // Left CMD key (LGUI_T(KC_T))
+        rgb_matrix_set_color(38, RGB_WHITE); // Right CMD key (RGUI_T(KC_N))
+    }
+
+    return false;
+}
+
+#endif
+
 #ifdef OLED_ENABLE
 
 bool oled_task_user(void) {

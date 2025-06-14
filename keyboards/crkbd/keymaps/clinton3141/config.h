@@ -31,3 +31,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 //#define QUICK_TAP_TERM 0
 //#define TAPPING_TERM 100
+
+#ifdef RGB_MATRIX_ENABLE
+#   define RGB_MATRIX_SLEEP // turn off effects when suspended
+#   define RGB_MATRIX_DEFAULT_MODE RGB_MATRIX_SOLID_COLOR
+#   define RGB_MATRIX_DEFAULT_HUE 0
+#   define RGB_MATRIX_DEFAULT_SAT 0
+#   define RGB_MATRIX_DEFAULT_VAL 0
+#endif
+
+// Enable split transport syncing for RGB matrix and modifiers
+#define SPLIT_RGB_MATRIX_ENABLE
+#define SPLIT_MODS_ENABLE
