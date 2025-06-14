@@ -94,6 +94,18 @@ bool is_gui_held(void) {
     return (get_oneshot_mods() | get_mods()) & MOD_MASK_GUI;
 }
 
+bool is_shift_held(void) {
+    return (get_oneshot_mods() | get_mods()) & MOD_MASK_SHIFT;
+}
+
+bool is_ctrl_held(void) {
+    return (get_oneshot_mods() | get_mods()) & MOD_MASK_CTRL;
+}
+
+bool is_alt_held(void) {
+    return (get_oneshot_mods() | get_mods()) & MOD_MASK_ALT;
+}
+
 void keyboard_post_init_user(void) {
     // Set RGB matrix to solid color mode with all LEDs off
     rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
@@ -106,10 +118,31 @@ bool rgb_matrix_indicators_user(void) {
         rgb_matrix_set_color(i, RGB_BLACK);
     }
 
-    // Light up keys 11 and 38 when CMD is held
+    // Light up modifier keys with white color when held
+
+    // Shift keys - White
+    if (is_shift_held()) {
+        rgb_matrix_set_color(22, RGB_WHITE);   // Left Shift (LSFT_T(KC_A))
+        rgb_matrix_set_color(49, RGB_WHITE);   // Right Shift (RSFT_T(KC_O))
+        rgb_matrix_set_color(40, RGB_WHITE);   // Thumb Shift (KC_LSFT)
+    }
+
+    // Ctrl keys - White
+    if (is_ctrl_held()) {
+        rgb_matrix_set_color(19, RGB_WHITE);   // Left Ctrl (LCTL_T(KC_R))
+        rgb_matrix_set_color(46, RGB_WHITE);   // Right Ctrl (RCTL_T(KC_I))
+    }
+
+    // Alt keys - White
+    if (is_alt_held()) {
+        rgb_matrix_set_color(16, RGB_WHITE);   // Left Alt (LALT_T(KC_S))
+        rgb_matrix_set_color(43, RGB_WHITE);   // Right Alt (RALT_T(KC_E))
+    }
+
+    // CMD/GUI keys - White
     if (is_gui_held()) {
-        rgb_matrix_set_color(11, RGB_WHITE); // Left CMD key (LGUI_T(KC_T))
-        rgb_matrix_set_color(38, RGB_WHITE); // Right CMD key (RGUI_T(KC_N))
+        rgb_matrix_set_color(11, RGB_WHITE); // Left CMD (LGUI_T(KC_T))
+        rgb_matrix_set_color(38, RGB_WHITE); // Right CMD (RGUI_T(KC_N))
     }
 
     return false;
