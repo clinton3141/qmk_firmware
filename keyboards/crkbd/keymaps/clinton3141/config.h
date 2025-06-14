@@ -40,6 +40,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #   define RGB_MATRIX_DEFAULT_VAL 0
 #endif
 
-// Enable split transport syncing for RGB matrix and modifiers
+// Enable split transport syncing for RGB matrix, modifiers, and layer state
 #define SPLIT_RGB_MATRIX_ENABLE
 #define SPLIT_MODS_ENABLE
+#define SPLIT_LAYER_STATE_ENABLE
