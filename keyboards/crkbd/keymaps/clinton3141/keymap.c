@@ -26,8 +26,6 @@ enum layers {
     _FNS
 };
 
-#define MOD_ACTIVE_COLOUR 0x16, 0x16, 0x00
-
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_BASE] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
@@ -68,11 +66,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ,
     [_MEDIA] = LAYOUT_split_3x6_3(
 //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-    _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, RGB_VAI, _______,
+    _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
 //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-    _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_MPRV, KC_MPLY, KC_MNXT, XXXXXXX, RGB_VAD, _______,
+    _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_MPRV, KC_MPLY, KC_MNXT, XXXXXXX, XXXXXXX, _______,
 //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-    _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_VOLD, KC_MUTE, KC_VOLU, XXXXXXX, RGB_TOG, _______,
+    _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_VOLD, KC_MUTE, KC_VOLU, XXXXXXX, XXXXXXX, _______,
 //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                                                                 _______, _______, _______,     _______, _______, _______
                                                                         //`--------------------------'  `--------------------------'
@@ -89,43 +87,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                         //`--------------------------'  `--------------------------'
 )
 };
-
-#ifdef RGB_MATRIX_ENABLE
-
-bool is_ctrl_held(void) { return (get_oneshot_mods() | get_mods()) & MOD_MASK_CTRL; }
-bool is_alt_held(void) { return (get_oneshot_mods() | get_mods()) & MOD_MASK_ALT; }
-bool is_gui_held(void) { return (get_oneshot_mods() | get_mods()) & MOD_MASK_GUI; }
-bool is_shift_held(void) { return (get_oneshot_mods() | get_mods()) & MOD_MASK_SHIFT; }
-
-
-bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
-        rgb_matrix_set_color(11, RGB_BLACK);
-        rgb_matrix_set_color(16, RGB_BLACK);
-        rgb_matrix_set_color(17, RGB_BLACK);
-        rgb_matrix_set_color(19, RGB_BLACK);
-    if (is_gui_held()) {
-        rgb_matrix_set_color(11, RGB_WHITE);
-    } else {
-        rgb_matrix_set_color(11, RGB_BLACK);
-    }
-    if (is_alt_held()) {
-        rgb_matrix_set_color(16, RGB_WHITE);
-    } else {
-        rgb_matrix_set_color(16, RGB_BLACK);
-    }
-    if (is_ctrl_held()) {
-        rgb_matrix_set_color(19, RGB_WHITE);
-    } else {
-        rgb_matrix_set_color(19, RGB_BLACK);
-    }
-    if (is_shift_held()) {
-        rgb_matrix_set_color(22, RGB_WHITE);
-    } else {
-        rgb_matrix_set_color(22, RGB_BLACK);
-    }
-    return false;
-}
-#endif
 
 #ifdef OLED_ENABLE
 
