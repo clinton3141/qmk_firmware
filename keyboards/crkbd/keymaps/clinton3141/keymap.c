@@ -107,45 +107,37 @@ bool is_alt_held(void) {
 }
 
 void keyboard_post_init_user(void) {
-    // Set RGB matrix to solid color mode with all LEDs off
     rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
-    rgb_matrix_sethsv_noeeprom(0, 0, 0); // Black
+    rgb_matrix_sethsv_noeeprom(HSV_OFF);
 }
 
-bool rgb_matrix_indicators_user(void) {
+bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     // Turn off all LEDs first
     for (uint8_t i = 0; i < RGB_MATRIX_LED_COUNT; i++) {
         rgb_matrix_set_color(i, RGB_BLACK);
     }
 
-    // Light up modifier keys with white color when held
-
-    // Shift keys - White
     if (is_shift_held()) {
         rgb_matrix_set_color(22, RGB_WHITE);   // Left Shift (LSFT_T(KC_A))
         rgb_matrix_set_color(49, RGB_WHITE);   // Right Shift (RSFT_T(KC_O))
         rgb_matrix_set_color(40, RGB_WHITE);   // Thumb Shift (KC_LSFT)
     }
 
-    // Ctrl keys - White
     if (is_ctrl_held()) {
         rgb_matrix_set_color(19, RGB_WHITE);   // Left Ctrl (LCTL_T(KC_R))
         rgb_matrix_set_color(46, RGB_WHITE);   // Right Ctrl (RCTL_T(KC_I))
     }
 
-    // Alt keys - White
     if (is_alt_held()) {
         rgb_matrix_set_color(16, RGB_WHITE);   // Left Alt (LALT_T(KC_S))
         rgb_matrix_set_color(43, RGB_WHITE);   // Right Alt (RALT_T(KC_E))
     }
 
-    // CMD/GUI keys - White
     if (is_gui_held()) {
         rgb_matrix_set_color(11, RGB_WHITE); // Left CMD (LGUI_T(KC_T))
         rgb_matrix_set_color(38, RGB_WHITE); // Right CMD (RGUI_T(KC_N))
     }
 
-    // Layer-specific lighting
     if (layer_state_is(_NUMS)) {
         // Top row symbols - Orange
         rgb_matrix_set_color(23, RGB_ORANGE);  // KC_EXLM (Q position)
@@ -184,7 +176,7 @@ bool rgb_matrix_indicators_user(void) {
         rgb_matrix_set_color(51, RGB_PINK);    // KC_LT (BSLS position)
     }
 
-    return false;
+    return true;
 }
 
 #endif
