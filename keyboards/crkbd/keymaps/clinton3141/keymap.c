@@ -114,83 +114,84 @@ void keyboard_post_init_user(void) {
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     // Turn off all LEDs first
     for (uint8_t i = 0; i < RGB_MATRIX_LED_COUNT; i++) {
-        rgb_matrix_set_color(i, RGB_BLACK);
+        RGB_MATRIX_INDICATOR_SET_COLOR(i, 0, 0, 0);
     }
 
     if (is_shift_held()) {
-        rgb_matrix_set_color(22, RGB_WHITE);
-        rgb_matrix_set_color(49, RGB_WHITE);
-        rgb_matrix_set_color(40, RGB_WHITE);
+        RGB_MATRIX_INDICATOR_SET_COLOR(22, 0xFF, 0xFF, 0xFF);
+        RGB_MATRIX_INDICATOR_SET_COLOR(49, 0xFF, 0xFF, 0xFF);
+        RGB_MATRIX_INDICATOR_SET_COLOR(40, 0xFF, 0xFF, 0xFF);
     }
 
     if (is_ctrl_held()) {
-        rgb_matrix_set_color(19, RGB_WHITE);
-        rgb_matrix_set_color(46, RGB_WHITE);
+        RGB_MATRIX_INDICATOR_SET_COLOR(19, 0xFF, 0xFF, 0xFF);
+        RGB_MATRIX_INDICATOR_SET_COLOR(46, 0xFF, 0xFF, 0xFF);
     }
 
     if (is_alt_held()) {
-        rgb_matrix_set_color(16, RGB_WHITE);
-        rgb_matrix_set_color(43, RGB_WHITE);
+        RGB_MATRIX_INDICATOR_SET_COLOR(16, 0xFF, 0xFF, 0xFF);
+        RGB_MATRIX_INDICATOR_SET_COLOR(43, 0xFF, 0xFF, 0xFF);
     }
 
     if (is_gui_held()) {
-        rgb_matrix_set_color(11, RGB_WHITE);
-        rgb_matrix_set_color(38, RGB_WHITE);
+        RGB_MATRIX_INDICATOR_SET_COLOR(11, 0xFF, 0xFF, 0xFF);
+        RGB_MATRIX_INDICATOR_SET_COLOR(38, 0xFF, 0xFF, 0xFF);
     }
 
     // Highlight bracket keys across all layers
     // Parentheses - Orange
     if (layer_state_is(_NUMS)) {
-        rgb_matrix_set_color(45, RGB_ORANGE);
-        rgb_matrix_set_color(50, RGB_ORANGE);
+        RGB_MATRIX_INDICATOR_SET_COLOR(45, 0xFF, 0xA5, 0x00);
+        RGB_MATRIX_INDICATOR_SET_COLOR(50, 0xFF, 0xA5, 0x00);
         // FNS layer toggle - Purple
-        rgb_matrix_set_color(34, RGB_PURPLE);
+        RGB_MATRIX_INDICATOR_SET_COLOR(34, 0x80, 0x00, 0x80);
     }
 
     // Curly braces - Yellow
     if (layer_state_is(_NUMS) || layer_state_is(_MODS_NAV)) {
-        rgb_matrix_set_color(39, RGB_YELLOW);
-        rgb_matrix_set_color(42, RGB_YELLOW);
+        RGB_MATRIX_INDICATOR_SET_COLOR(39, 0xFF, 0xFF, 0x00);
+        RGB_MATRIX_INDICATOR_SET_COLOR(42, 0xFF, 0xFF, 0x00);
     }
 
     // Square brackets - Cyan
     if (layer_state_is(_NUMS) || layer_state_is(_MODS_NAV)) {
-        rgb_matrix_set_color(47, RGB_CYAN);
-        rgb_matrix_set_color(48, RGB_CYAN);
+        RGB_MATRIX_INDICATOR_SET_COLOR(47, 0x00, 0xFF, 0xFF);
+        RGB_MATRIX_INDICATOR_SET_COLOR(48, 0x00, 0xFF, 0xFF);
     }
 
-    // Zoom controls on MODS_NAV layer - Purple/Magenta
+    // Zoom controls on MODS_NAV layer - Green/Spring Green
     if (layer_state_is(_MODS_NAV)) {
-        rgb_matrix_set_color(10, RGB_SPRINGGREEN);
-        rgb_matrix_set_color(17, RGB_GREEN);
-        rgb_matrix_set_color(18, RGB_SPRINGGREEN);
+        RGB_MATRIX_INDICATOR_SET_COLOR(10, 0x00, 0xFF, 0x7F);
+        RGB_MATRIX_INDICATOR_SET_COLOR(17, 0x00, 0x80, 0x00);
+        RGB_MATRIX_INDICATOR_SET_COLOR(18, 0x00, 0xFF, 0x7F);
     }
 
     // Arrow keys on MODS_NAV layer - Red
     if (layer_state_is(_MODS_NAV)) {
-        rgb_matrix_set_color(44, RGB_RED);
-        rgb_matrix_set_color(38, RGB_RED);
-        rgb_matrix_set_color(43, RGB_RED);
-        rgb_matrix_set_color(46, RGB_RED);
+        RGB_MATRIX_INDICATOR_SET_COLOR(44, 0xFF, 0x00, 0x00);
+        RGB_MATRIX_INDICATOR_SET_COLOR(38, 0xFF, 0x00, 0x00);
+        RGB_MATRIX_INDICATOR_SET_COLOR(43, 0xFF, 0x00, 0x00);
+        RGB_MATRIX_INDICATOR_SET_COLOR(46, 0xFF, 0x00, 0x00);
     }
 
-    // Function keys on FNS layer
     if (layer_state_is(_FNS)) {
-        // Most F keys - Yellow
-        rgb_matrix_set_color(21, RGB_YELLOW);  // F1 (Z position)
-        rgb_matrix_set_color(20, RGB_YELLOW);  // F2 (X position)
-        rgb_matrix_set_color(15, RGB_YELLOW);  // F3 (C position)
-        rgb_matrix_set_color(12, RGB_YELLOW);  // F4 (D position)
-        rgb_matrix_set_color(19, RGB_YELLOW);  // F6 (R position)
-        rgb_matrix_set_color(16, RGB_YELLOW);  // F7 (S position)
-        rgb_matrix_set_color(11, RGB_YELLOW);  // F8 (T position)
-        rgb_matrix_set_color(23, RGB_YELLOW);  // F9 (Q position)
+        // Bottom row F keys (F1, F2, F3, F4) - Yellow
+        RGB_MATRIX_INDICATOR_SET_COLOR(21, 0xFF, 0xFF, 0x00);
+        RGB_MATRIX_INDICATOR_SET_COLOR(20, 0xFF, 0xFF, 0x00);
+        RGB_MATRIX_INDICATOR_SET_COLOR(15, 0xFF, 0xFF, 0x00);
+        RGB_MATRIX_INDICATOR_SET_COLOR(12, 0xFF, 0xFF, 0x00);
 
-        // Special F keys - Red
-        rgb_matrix_set_color(22, RGB_RED);     // F5 (A position)
-        rgb_matrix_set_color(18, RGB_RED);     // F10 (W position)
-        rgb_matrix_set_color(17, RGB_RED);     // F11 (F position)
-        rgb_matrix_set_color(10, RGB_RED);     // F12 (P position)
+        // Middle row F keys (F5, F6, F7, F8) - F5=Red, F6-F8=Yellow
+        RGB_MATRIX_INDICATOR_SET_COLOR(22, 0xFF, 0x00, 0x00);
+        RGB_MATRIX_INDICATOR_SET_COLOR(19, 0xFF, 0xFF, 0x00);
+        RGB_MATRIX_INDICATOR_SET_COLOR(16, 0xFF, 0xFF, 0x00);
+        RGB_MATRIX_INDICATOR_SET_COLOR(11, 0xFF, 0xFF, 0x00);
+
+        // Top row F keys (F9, F10, F11, F12) - F9=Yellow, F10-F12=Red
+        RGB_MATRIX_INDICATOR_SET_COLOR(23, 0xFF, 0xFF, 0x00);
+        RGB_MATRIX_INDICATOR_SET_COLOR(18, 0xFF, 0x00, 0x00);
+        RGB_MATRIX_INDICATOR_SET_COLOR(17, 0xFF, 0x00, 0x00);
+        RGB_MATRIX_INDICATOR_SET_COLOR(10, 0xFF, 0x00, 0x00);
     }
 
     return true;
