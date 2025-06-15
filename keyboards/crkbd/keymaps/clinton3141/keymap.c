@@ -35,7 +35,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
      KC_GRAVE,    KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,                         KC_K,    KC_H, KC_COMM,  KC_DOT, KC_SLSH,  KC_BSLS,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                        MO(_MEDIA), KC_SPC, MO(_MODS_NAV),     LT(_NUMS, KC_ENT), KC_LSFT, LT(_FNS, KC_BSPC)
+                                        MO(_MEDIA), KC_SPC, MO(_MODS_NAV),     LT(_NUMS, KC_ENT), KC_LSFT, KC_BSPC
                                       //`--------------------------'  `--------------------------'
 
   ),
@@ -46,7 +46,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       _______,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0,   KC_GT,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______, KC_UNDS, KC_MINS, KC_PLUS,  KC_EQL,  XXXXXXX,                      XXXXXXX, KC_LCBR, KC_RCBR, KC_LBRC, KC_RBRC,   KC_LT,
+      _______, KC_UNDS, KC_MINS, KC_PLUS,  KC_EQL,  XXXXXXX,                      MO(_FNS), KC_LCBR, KC_RCBR, KC_LBRC, KC_RBRC,   KC_LT,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           _______, _______, _______,     _______,   _______, _______
                                       //`--------------------------'  `--------------------------'
@@ -143,6 +143,8 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     if (layer_state_is(_NUMS)) {
         rgb_matrix_set_color(45, RGB_ORANGE);
         rgb_matrix_set_color(50, RGB_ORANGE);
+        // FNS layer toggle - Purple
+        rgb_matrix_set_color(34, RGB_PURPLE);
     }
 
     // Curly braces - Yellow
@@ -170,6 +172,25 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         rgb_matrix_set_color(38, RGB_RED);
         rgb_matrix_set_color(43, RGB_RED);
         rgb_matrix_set_color(46, RGB_RED);
+    }
+
+    // Function keys on FNS layer
+    if (layer_state_is(_FNS)) {
+        // Most F keys - Yellow
+        rgb_matrix_set_color(21, RGB_YELLOW);  // F1 (Z position)
+        rgb_matrix_set_color(20, RGB_YELLOW);  // F2 (X position)
+        rgb_matrix_set_color(15, RGB_YELLOW);  // F3 (C position)
+        rgb_matrix_set_color(12, RGB_YELLOW);  // F4 (D position)
+        rgb_matrix_set_color(19, RGB_YELLOW);  // F6 (R position)
+        rgb_matrix_set_color(16, RGB_YELLOW);  // F7 (S position)
+        rgb_matrix_set_color(11, RGB_YELLOW);  // F8 (T position)
+        rgb_matrix_set_color(23, RGB_YELLOW);  // F9 (Q position)
+
+        // Special F keys - Red
+        rgb_matrix_set_color(22, RGB_RED);     // F5 (A position)
+        rgb_matrix_set_color(18, RGB_RED);     // F10 (W position)
+        rgb_matrix_set_color(17, RGB_RED);     // F11 (F position)
+        rgb_matrix_set_color(10, RGB_RED);     // F12 (P position)
     }
 
     return true;
