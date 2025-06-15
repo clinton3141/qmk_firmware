@@ -54,7 +54,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_MODS_NAV] = LAYOUT_split_3x6_3(
 //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, KC_UP, XXXXXXX, XXXXXXX, KC_BACKSPACE,
+    XXXXXXX, XXXXXXX, LCMD(KC_MINUS), LCMD(KC_KP_0), LCMD(KC_EQUAL), XXXXXXX,                     XXXXXXX, XXXXXXX, KC_UP, XXXXXXX, XXXXXXX, KC_BACKSPACE,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
     _______,OSM(MOD_LSFT),OSM(MOD_LCTL),OSM(MOD_LALT),OSM(MOD_LGUI),XXXXXXX,           KC_TAB, KC_LEFT, KC_DOWN, KC_RIGHT,    KC_0,  KC_EQL,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -155,6 +155,13 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     if (layer_state_is(_NUMS) || layer_state_is(_MODS_NAV)) {
         rgb_matrix_set_color(47, RGB_CYAN);
         rgb_matrix_set_color(48, RGB_CYAN);
+    }
+
+    // Zoom controls on MODS_NAV layer - Purple/Magenta
+    if (layer_state_is(_MODS_NAV)) {
+        rgb_matrix_set_color(10, RGB_SPRINGGREEN);
+        rgb_matrix_set_color(17, RGB_GREEN);
+        rgb_matrix_set_color(18, RGB_SPRINGGREEN);
     }
 
     return true;
