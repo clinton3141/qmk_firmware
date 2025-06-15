@@ -164,6 +164,14 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         rgb_matrix_set_color(18, RGB_SPRINGGREEN);
     }
 
+    // Arrow keys on MODS_NAV layer - Red
+    if (layer_state_is(_MODS_NAV)) {
+        rgb_matrix_set_color(44, RGB_RED);
+        rgb_matrix_set_color(38, RGB_RED);
+        rgb_matrix_set_color(43, RGB_RED);
+        rgb_matrix_set_color(46, RGB_RED);
+    }
+
     return true;
 }
 
