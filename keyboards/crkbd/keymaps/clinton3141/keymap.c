@@ -118,62 +118,43 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     }
 
     if (is_shift_held()) {
-        rgb_matrix_set_color(22, RGB_WHITE);   // Left Shift (LSFT_T(KC_A))
-        rgb_matrix_set_color(49, RGB_WHITE);   // Right Shift (RSFT_T(KC_O))
-        rgb_matrix_set_color(40, RGB_WHITE);   // Thumb Shift (KC_LSFT)
+        rgb_matrix_set_color(22, RGB_WHITE);
+        rgb_matrix_set_color(49, RGB_WHITE);
+        rgb_matrix_set_color(40, RGB_WHITE);
     }
 
     if (is_ctrl_held()) {
-        rgb_matrix_set_color(19, RGB_WHITE);   // Left Ctrl (LCTL_T(KC_R))
-        rgb_matrix_set_color(46, RGB_WHITE);   // Right Ctrl (RCTL_T(KC_I))
+        rgb_matrix_set_color(19, RGB_WHITE);
+        rgb_matrix_set_color(46, RGB_WHITE);
     }
 
     if (is_alt_held()) {
-        rgb_matrix_set_color(16, RGB_WHITE);   // Left Alt (LALT_T(KC_S))
-        rgb_matrix_set_color(43, RGB_WHITE);   // Right Alt (RALT_T(KC_E))
+        rgb_matrix_set_color(16, RGB_WHITE);
+        rgb_matrix_set_color(43, RGB_WHITE);
     }
 
     if (is_gui_held()) {
-        rgb_matrix_set_color(11, RGB_WHITE); // Left CMD (LGUI_T(KC_T))
-        rgb_matrix_set_color(38, RGB_WHITE); // Right CMD (RGUI_T(KC_N))
+        rgb_matrix_set_color(11, RGB_WHITE);
+        rgb_matrix_set_color(38, RGB_WHITE);
     }
 
+    // Highlight bracket keys across all layers
+    // Parentheses - Orange
     if (layer_state_is(_NUMS)) {
-        // Top row symbols - Orange
-        rgb_matrix_set_color(23, RGB_ORANGE);  // KC_EXLM (Q position)
-        rgb_matrix_set_color(18, RGB_ORANGE);  // KC_AT (W position)
-        rgb_matrix_set_color(17, RGB_ORANGE);  // KC_HASH (F position)
-        rgb_matrix_set_color(10, RGB_ORANGE);  // KC_DLR (P position)
-        rgb_matrix_set_color(9, RGB_ORANGE);   // KC_PERC (B position)
-        rgb_matrix_set_color(36, RGB_ORANGE);  // KC_CIRC (J position)
-        rgb_matrix_set_color(35, RGB_ORANGE);  // KC_AMPR (L position)
-        rgb_matrix_set_color(44, RGB_ORANGE);  // KC_ASTR (U position)
-        rgb_matrix_set_color(45, RGB_ORANGE);  // KC_LPRN (Y position)
-        rgb_matrix_set_color(50, RGB_ORANGE);  // KC_RPRN (SCLN position)
+        rgb_matrix_set_color(45, RGB_ORANGE);
+        rgb_matrix_set_color(50, RGB_ORANGE);
+    }
 
-        // Number row - Yellow
-        rgb_matrix_set_color(22, RGB_YELLOW);  // KC_1 (A position)
-        rgb_matrix_set_color(19, RGB_YELLOW);  // KC_2 (R position)
-        rgb_matrix_set_color(16, RGB_YELLOW);  // KC_3 (S position)
-        rgb_matrix_set_color(11, RGB_YELLOW);  // KC_4 (T position)
-        rgb_matrix_set_color(8, RGB_YELLOW);   // KC_5 (G position)
-        rgb_matrix_set_color(34, RGB_YELLOW);  // KC_6 (M position)
-        rgb_matrix_set_color(38, RGB_YELLOW);  // KC_7 (N position)
-        rgb_matrix_set_color(43, RGB_YELLOW);  // KC_8 (E position)
-        rgb_matrix_set_color(46, RGB_YELLOW);  // KC_9 (I position)
-        rgb_matrix_set_color(49, RGB_YELLOW);  // KC_0 (O position)
+    // Curly braces - Yellow
+    if (layer_state_is(_NUMS) || layer_state_is(_MODS_NAV)) {
+        rgb_matrix_set_color(39, RGB_YELLOW);
+        rgb_matrix_set_color(42, RGB_YELLOW);
+    }
 
-        // Other explicitly set keys - Pink
-        rgb_matrix_set_color(52, RGB_PINK);    // KC_GT (QUOT position)
-        rgb_matrix_set_color(21, RGB_PINK);    // KC_UNDS (Z position)
-        rgb_matrix_set_color(20, RGB_PINK);    // KC_MINS (X position)
-        rgb_matrix_set_color(15, RGB_PINK);    // KC_PLUS (C position)
-        rgb_matrix_set_color(12, RGB_PINK);    // KC_EQL (D position)
-        rgb_matrix_set_color(39, RGB_PINK);    // KC_LCBR (H position)
-        rgb_matrix_set_color(42, RGB_PINK);    // KC_RCBR (COMM position)
-        rgb_matrix_set_color(47, RGB_PINK);    // KC_LBRC (DOT position)
-        rgb_matrix_set_color(48, RGB_PINK);    // KC_RBRC (SLSH position)
-        rgb_matrix_set_color(51, RGB_PINK);    // KC_LT (BSLS position)
+    // Square brackets - Cyan
+    if (layer_state_is(_NUMS) || layer_state_is(_MODS_NAV)) {
+        rgb_matrix_set_color(47, RGB_CYAN);
+        rgb_matrix_set_color(48, RGB_CYAN);
     }
 
     return true;
