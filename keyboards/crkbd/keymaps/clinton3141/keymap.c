@@ -46,7 +46,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       _______,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0,   KC_GT,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______, KC_UNDS, KC_MINS, KC_PLUS,  KC_EQL,  XXXXXXX,                      MO(_FNS), KC_LCBR, KC_RCBR, KC_LBRC, KC_RBRC,   KC_LT,
+      _______, KC_UNDS, KC_MINS, KC_PLUS,  KC_EQL,  XXXXXXX,                      TO(_FNS), KC_LCBR, KC_RCBR, KC_LBRC, KC_RBRC,   KC_LT,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           _______, _______, _______,     _______,   _______, _______
                                       //`--------------------------'  `--------------------------'
@@ -54,11 +54,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_MODS_NAV] = LAYOUT_split_3x6_3(
 //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-    XXXXXXX, XXXXXXX, LCMD(KC_MINUS), LCMD(KC_KP_0), LCMD(KC_EQUAL), XXXXXXX,                     XXXXXXX, XXXXXXX, KC_UP, XXXXXXX, XXXXXXX, KC_BACKSPACE,
+    _______, XXXXXXX, LCMD(KC_MINUS), LCMD(KC_KP_0), LCMD(KC_EQUAL), XXXXXXX,                     XXXXXXX, XXXXXXX, KC_UP, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-    _______,OSM(MOD_LSFT),OSM(MOD_LCTL),OSM(MOD_LALT),OSM(MOD_LGUI),XXXXXXX,           KC_TAB, KC_LEFT, KC_DOWN, KC_RIGHT,    KC_0,  KC_EQL,
+    _______,OSM(MOD_LSFT),OSM(MOD_LCTL),OSM(MOD_LALT),OSM(MOD_LGUI),XXXXXXX,           KC_TAB, KC_LEFT, KC_DOWN, KC_RIGHT,    XXXXXXX,  XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-    XXXXXXX,LCMD(KC_Z),LCMD(KC_X),LCMD(KC_C),XXXXXXX,LCMD(KC_V),                KC_GRAVE, KC_LCBR, KC_RCBR, KC_LBRC, KC_RBRC, KC_MINS,
+    _______,LCMD(KC_Z),LCMD(KC_X),LCMD(KC_C),XXXXXXX,LCMD(KC_V),                KC_GRAVE, KC_LCBR, KC_RCBR, KC_LBRC, KC_RBRC, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           _______, _______, _______,     _______,   _______, _______
                                       //`--------------------------'  `--------------------------'
@@ -66,22 +66,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ,
     [_MEDIA] = LAYOUT_split_3x6_3(
 //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-    _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
+    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
 //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-    _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_MPRV, KC_MPLY, KC_MNXT, XXXXXXX, XXXXXXX, _______,
+    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_MPRV, KC_MPLY, KC_MNXT, XXXXXXX, XXXXXXX, XXXXXXX,
 //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-    _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_VOLD, KC_MUTE, KC_VOLU, XXXXXXX, XXXXXXX, _______,
+    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_VOLD, KC_MUTE, KC_VOLU, XXXXXXX, XXXXXXX, XXXXXXX,
 //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                                                                 _______, _______, _______,     _______, _______, _______
                                                                         //`--------------------------'  `--------------------------'
 ),
     [_FNS] = LAYOUT_split_3x6_3(
 //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-    _______, KC_F9,   KC_F10,  KC_F11,  KC_F12,  XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
+    TO(_BASE), KC_F9,   KC_F10,  KC_F11,  KC_F12,  XXXXXXX,                      QK_RGB_MATRIX_TOGGLE, QK_RGB_MATRIX_VALUE_DOWN, QK_RGB_MATRIX_VALUE_UP, XXXXXXX, XXXXXXX, XXXXXXX,
 //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-    _______, KC_F5,   KC_F6,   KC_F7,   KC_F8,   XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
+    XXXXXXX, KC_F5,   KC_F6,   KC_F7,   KC_F8,   XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
 //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-    _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
+    XXXXXXX, KC_F1,   KC_F2,   KC_F3,   KC_F4,   XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
 //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                                                                 _______, _______, _______,     _______, _______, _______
                                                                         //`--------------------------'  `--------------------------'
@@ -145,6 +145,18 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         RGB_MATRIX_INDICATOR_SET_COLOR(50, 0xFF, 0xA5, 0x00);
         // FNS layer toggle - Purple
         RGB_MATRIX_INDICATOR_SET_COLOR(34, 0x80, 0x00, 0x80);
+
+        // Number keys - Green
+        RGB_MATRIX_INDICATOR_SET_COLOR(22, 0x00, 0xFF, 0x00); // 1
+        RGB_MATRIX_INDICATOR_SET_COLOR(19, 0x00, 0xFF, 0x00); // 2
+        RGB_MATRIX_INDICATOR_SET_COLOR(16, 0x00, 0xFF, 0x00); // 3
+        RGB_MATRIX_INDICATOR_SET_COLOR(11, 0x00, 0xFF, 0x00); // 4
+        RGB_MATRIX_INDICATOR_SET_COLOR(8, 0x00, 0xFF, 0x00);  // 5
+        RGB_MATRIX_INDICATOR_SET_COLOR(35, 0x00, 0xFF, 0x00); // 6
+        RGB_MATRIX_INDICATOR_SET_COLOR(38, 0x00, 0xFF, 0x00); // 7
+        RGB_MATRIX_INDICATOR_SET_COLOR(43, 0x00, 0xFF, 0x00); // 8
+        RGB_MATRIX_INDICATOR_SET_COLOR(46, 0x00, 0xFF, 0x00); // 9
+        RGB_MATRIX_INDICATOR_SET_COLOR(49, 0x00, 0xFF, 0x00); // 0
     }
 
     // Curly braces - Yellow
@@ -174,6 +186,16 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         RGB_MATRIX_INDICATOR_SET_COLOR(46, 0xFF, 0x00, 0x00);
     }
 
+    // Media controls on MEDIA layer
+    if (layer_state_is(_MEDIA)) {
+        RGB_MATRIX_INDICATOR_SET_COLOR(34, 0xFF, 0xC0, 0xCB);
+        RGB_MATRIX_INDICATOR_SET_COLOR(39, 0xFF, 0x00, 0x00);
+        RGB_MATRIX_INDICATOR_SET_COLOR(42, 0x00, 0xFF, 0x00);
+        RGB_MATRIX_INDICATOR_SET_COLOR(35, 0xFF, 0xFF, 0x00);
+        RGB_MATRIX_INDICATOR_SET_COLOR(38, 0x00, 0xFF, 0x00);
+        RGB_MATRIX_INDICATOR_SET_COLOR(43, 0xFF, 0xFF, 0x00);
+    }
+
     if (layer_state_is(_FNS)) {
         // Bottom row F keys (F1, F2, F3, F4) - Yellow
         RGB_MATRIX_INDICATOR_SET_COLOR(21, 0xFF, 0xFF, 0x00);
@@ -192,6 +214,14 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         RGB_MATRIX_INDICATOR_SET_COLOR(18, 0xFF, 0x00, 0x00);
         RGB_MATRIX_INDICATOR_SET_COLOR(17, 0xFF, 0x00, 0x00);
         RGB_MATRIX_INDICATOR_SET_COLOR(10, 0xFF, 0x00, 0x00);
+
+        // RGB lighting controls - Right side
+        RGB_MATRIX_INDICATOR_SET_COLOR(36, 0xFF, 0x00, 0x00);
+        RGB_MATRIX_INDICATOR_SET_COLOR(37, 0x80, 0x80, 0x80);
+        RGB_MATRIX_INDICATOR_SET_COLOR(44, 0xFF, 0xFF, 0xFF);
+
+        // BASE layer toggle - Right side
+        RGB_MATRIX_INDICATOR_SET_COLOR(24, 0x80, 0x00, 0x80);
     }
 
     return true;
