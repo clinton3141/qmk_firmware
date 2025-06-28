@@ -29,63 +29,63 @@ enum layers {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_BASE] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-       KC_ESC,    KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,                         KC_J,    KC_L,    KC_U,    KC_Y,KC_SCLN,  KC_BSLS,
-//|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-         KC_TAB, LSFT_T(KC_A), LCTL_T(KC_R), LALT_T(KC_S), LGUI_T(KC_T),    KC_G,                         KC_M, RGUI_T(KC_N), RALT_T(KC_E), RCTL_T(KC_I), RSFT_T(KC_O),  KC_QUOT,
+      KC_ESC,           KC_Q,             KC_W,             KC_F,             KC_P,             KC_B,                         KC_J,             KC_L,             KC_U,             KC_Y,             KC_SCLN,          KC_BSLS,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-     KC_GRAVE,    KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,                         KC_K,    KC_H, KC_COMM,  KC_DOT, KC_SLSH,  KC_BSLS,
+      KC_TAB,           LSFT_T(KC_A),     LCTL_T(KC_R),     LALT_T(KC_S),     LGUI_T(KC_T),     KC_G,                         KC_M,             RGUI_T(KC_N),     RALT_T(KC_E),     RCTL_T(KC_I),     RSFT_T(KC_O),     KC_QUOT,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      KC_GRAVE,         KC_Z,             KC_X,             KC_C,             KC_D,             KC_V,                         KC_K,             KC_H,             KC_COMM,          KC_DOT,           KC_SLSH,          KC_BSLS,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                        MO(_MEDIA), KC_SPC, MO(_MODS_NAV),     LT(_NUMS, KC_ENT), KC_LSFT, KC_BSPC
-                                      //`--------------------------'  `--------------------------'
-
-  ),
+                                                          MO(_MEDIA),       KC_SPC,           MO(_MODS_NAV),    LT(_NUMS, KC_ENT), KC_LSFT,          KC_BSPC
+                                                      //`--------------------------'  `--------------------------'
+    ),
 
     [_NUMS] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-      _______, KC_EXLM,   KC_AT, KC_HASH,  KC_DLR, KC_PERC,                      KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, _______,
+      _______,          KC_EXLM,          KC_AT,            KC_HASH,          KC_DLR,           KC_PERC,                      KC_CIRC,          KC_AMPR,          KC_ASTR,          KC_LPRN,          KC_RPRN,          _______,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0,   KC_GT,
+      _______,          KC_1,             KC_2,             KC_3,             KC_4,             KC_5,                         KC_6,             KC_7,             KC_8,             KC_9,             KC_0,             KC_GT,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______, KC_UNDS, KC_MINS, KC_PLUS,  KC_EQL,  XXXXXXX,                      TO(_FNS), KC_LCBR, KC_RCBR, KC_LBRC, KC_RBRC,   KC_LT,
+      _______,          KC_UNDS,          KC_MINS,          KC_PLUS,          KC_EQL,           XXXXXXX,                      TO(_FNS),         KC_LCBR,          KC_RCBR,          KC_LBRC,          KC_RBRC,          KC_LT,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          _______, _______, _______,     _______,   _______, _______
-                                      //`--------------------------'  `--------------------------'
-  ),
+                                                          _______,          _______,          _______,          _______,          _______,          _______
+                                                      //`--------------------------'  `--------------------------'
+    ),
 
     [_MODS_NAV] = LAYOUT_split_3x6_3(
-//,-----------------------------------------------------.                    ,-----------------------------------------------------.
-    _______, XXXXXXX, LCMD(KC_MINUS), LCMD(KC_KP_0), LCMD(KC_EQUAL), XXXXXXX,                     XXXXXXX, XXXXXXX, KC_UP, XXXXXXX, KC_PAGE_UP, XXXXXXX,
+  //,-----------------------------------------------------.                    ,-----------------------------------------------------.
+      _______,          XXXXXXX,          LCMD(KC_MINUS),   LCMD(KC_KP_0),    LCMD(KC_EQUAL),   XXXXXXX,                      XXXXXXX,          LCTL(LSFT(KC_MINUS)),          KC_UP,            LCTL(KC_MINUS),          KC_PAGE_UP,       XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-    _______,OSM(MOD_LSFT),OSM(MOD_LCTL),OSM(MOD_LALT),OSM(MOD_LGUI),XXXXXXX,           KC_TAB, KC_LEFT, KC_DOWN, KC_RIGHT,    KC_PAGE_DOWN,  XXXXXXX,
+      _______,          OSM(MOD_LSFT),    OSM(MOD_LCTL),    OSM(MOD_LALT),    OSM(MOD_LGUI),    XXXXXXX,                      KC_TAB,           KC_LEFT,          KC_DOWN,          KC_RIGHT,         KC_PAGE_DOWN,     XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-    _______,LCMD(KC_Z),LCMD(KC_X),LCMD(KC_C),XXXXXXX,LCMD(KC_V),                KC_GRAVE, KC_LCBR, KC_RCBR, KC_LBRC, KC_RBRC, XXXXXXX,
+      _______,          LCMD(KC_Z),       LCMD(KC_X),       LCMD(KC_C),       XXXXXXX,          LCMD(KC_V),                   KC_GRAVE,         KC_LCBR,          KC_RCBR,          KC_LBRC,          KC_RBRC,          XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          _______, _______, _______,     _______,   _______, _______
-                                      //`--------------------------'  `--------------------------'
-  )
-,
+                                                          _______,          _______,          _______,          _______,          _______,          _______
+                                                      //`--------------------------'  `--------------------------'
+    ),
+
     [_MEDIA] = LAYOUT_split_3x6_3(
-//,-----------------------------------------------------.                    ,-----------------------------------------------------.
-    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-//|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_MPRV, KC_MPLY, KC_MNXT, XXXXXXX, XXXXXXX, XXXXXXX,
-//|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_VOLD, KC_MUTE, KC_VOLU, XXXXXXX, XXXXXXX, XXXXXXX,
-//|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                                                                _______, _______, _______,     _______, _______, _______
-                                                                        //`--------------------------'  `--------------------------'
-),
+  //,-----------------------------------------------------.                    ,-----------------------------------------------------.
+      XXXXXXX,          XXXXXXX,          XXXXXXX,          XXXXXXX,          XXXXXXX,          XXXXXXX,                      XXXXXXX,          XXXXXXX,          XXXXXXX,          XXXXXXX,          XXXXXXX,          XXXXXXX,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      XXXXXXX,          XXXXXXX,          XXXXXXX,          XXXXXXX,          XXXXXXX,          XXXXXXX,                      KC_MPRV,          KC_MPLY,          KC_MNXT,          XXXXXXX,          XXXXXXX,          XXXXXXX,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      XXXXXXX,          XXXXXXX,          XXXXXXX,          XXXXXXX,          XXXXXXX,          XXXXXXX,                      KC_VOLD,          KC_MUTE,          KC_VOLU,          XXXXXXX,          XXXXXXX,          XXXXXXX,
+  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                                          _______,          _______,          _______,          _______,          _______,          _______
+                                                      //`--------------------------'  `--------------------------'
+    ),
+
     [_FNS] = LAYOUT_split_3x6_3(
-//,-----------------------------------------------------.                    ,-----------------------------------------------------.
-    TO(_BASE), KC_F9,   KC_F10,  KC_F11,  KC_F12,  XXXXXXX,                      QK_RGB_MATRIX_TOGGLE, QK_RGB_MATRIX_VALUE_DOWN, QK_RGB_MATRIX_VALUE_UP, XXXXXXX, XXXXXXX, XXXXXXX,
-//|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-    XXXXXXX, KC_F5,   KC_F6,   KC_F7,   KC_F8,   XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-//|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-    XXXXXXX, KC_F1,   KC_F2,   KC_F3,   KC_F4,   XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-//|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                                                                _______, _______, _______,     _______, _______, _______
-                                                                        //`--------------------------'  `--------------------------'
-)
+  //,-----------------------------------------------------.                    ,-----------------------------------------------------.
+      TO(_BASE),        KC_F9,            KC_F10,           KC_F11,           KC_F12,           XXXXXXX,                      QK_RGB_MATRIX_TOGGLE, QK_RGB_MATRIX_VALUE_DOWN, QK_RGB_MATRIX_VALUE_UP, XXXXXXX, XXXXXXX,          XXXXXXX,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      XXXXXXX,          KC_F5,            KC_F6,            KC_F7,            KC_F8,            XXXXXXX,                      XXXXXXX,          XXXXXXX,          XXXXXXX,          XXXXXXX,          XXXXXXX,          XXXXXXX,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      XXXXXXX,          KC_F1,            KC_F2,            KC_F3,            KC_F4,            XXXXXXX,                      XXXXXXX,          XXXXXXX,          XXXXXXX,          XXXXXXX,          XXXXXXX,          XXXXXXX,
+  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                                          _______,          _______,          _______,          _______,          _______,          _______
+                                                      //`--------------------------'  `--------------------------'
+    )
 };
 
 #ifdef RGB_MATRIX_ENABLE
@@ -171,19 +171,25 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         RGB_MATRIX_INDICATOR_SET_COLOR(48, 0x00, 0xFF, 0xFF);
     }
 
-    // Zoom controls on MODS_NAV layer - Green/Spring Green
     if (layer_state_is(_MODS_NAV)) {
+        // Zoom controls on MODS_NAV layer - Green/Spring Green
         RGB_MATRIX_INDICATOR_SET_COLOR(10, 0x00, 0xFF, 0x7F);
         RGB_MATRIX_INDICATOR_SET_COLOR(17, 0x00, 0x80, 0x00);
         RGB_MATRIX_INDICATOR_SET_COLOR(18, 0x00, 0xFF, 0x7F);
-    }
 
-    // Arrow keys on MODS_NAV layer - Red
-    if (layer_state_is(_MODS_NAV)) {
+        // Arrow keys on MODS_NAV layer - Red
         RGB_MATRIX_INDICATOR_SET_COLOR(44, 0xFF, 0x00, 0x00);
         RGB_MATRIX_INDICATOR_SET_COLOR(38, 0xFF, 0x00, 0x00);
         RGB_MATRIX_INDICATOR_SET_COLOR(43, 0xFF, 0x00, 0x00);
         RGB_MATRIX_INDICATOR_SET_COLOR(46, 0xFF, 0x00, 0x00);
+
+        // Page Up/Down on MODS_NAV layer - Blue
+        RGB_MATRIX_INDICATOR_SET_COLOR(49, 0x00, 0x00, 0xFF);
+        RGB_MATRIX_INDICATOR_SET_COLOR(50, 0x00, 0x00, 0xFF);
+
+        // IDE forward/backward on MODS_NAV layer - Purple
+        RGB_MATRIX_INDICATOR_SET_COLOR(37, 0x80, 0x00, 0x80);
+        RGB_MATRIX_INDICATOR_SET_COLOR(45, 0x80, 0x00, 0x80);
     }
 
     // Media controls on MEDIA layer
