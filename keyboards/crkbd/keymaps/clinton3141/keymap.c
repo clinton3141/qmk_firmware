@@ -53,11 +53,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_MODS_NAV] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-      _______,          XXXXXXX,          LCMD(KC_MINUS),   LCMD(KC_KP_0),    LCMD(KC_EQUAL),   XXXXXXX,                      XXXXXXX,          LCTL(LSFT(KC_MINUS)),          KC_UP,            LCTL(KC_MINUS),          KC_PAGE_UP,       XXXXXXX,
+      _______,          XXXXXXX,          LCMD(KC_MINUS),   LCMD(KC_KP_0),    LCMD(KC_EQUAL),   XXXXXXX,                      XXXXXXX,          LCTL(KC_MINUS),   KC_UP,            LCTL(LSFT(KC_MINUS)),KC_PAGE_UP,       XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______,          OSM(MOD_LSFT),    OSM(MOD_LCTL),    OSM(MOD_LALT),    OSM(MOD_LGUI),    XXXXXXX,                      KC_TAB,           KC_LEFT,          KC_DOWN,          KC_RIGHT,         KC_PAGE_DOWN,     XXXXXXX,
+      _______,          OSM(MOD_LSFT),    OSM(MOD_LCTL),    OSM(MOD_LALT),    OSM(MOD_LGUI),    XXXXXXX,                      KC_TAB,           KC_LEFT,          KC_DOWN,          KC_RIGHT,            KC_PAGE_DOWN,     XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______,          LCMD(KC_Z),       LCMD(KC_X),       LCMD(KC_C),       XXXXXXX,          LCMD(KC_V),                   KC_GRAVE,         KC_LCBR,          KC_RCBR,          KC_LBRC,          KC_RBRC,          XXXXXXX,
+      _______,          LCMD(KC_Z),       LCMD(KC_X),       LCMD(KC_C),       XXXXXXX,          LCMD(KC_V),                   KC_GRAVE,         KC_LCBR,          KC_RCBR,          KC_LBRC,             KC_RBRC,          XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                                           _______,          _______,          _______,          _______,          _______,          _______
                                                       //`--------------------------'  `--------------------------'
