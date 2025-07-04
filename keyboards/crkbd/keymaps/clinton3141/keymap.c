@@ -90,6 +90,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 #ifdef RGB_MATRIX_ENABLE
 
+static uint8_t global_brightness = 128;
+
 bool is_gui_held(void) {
     return (get_oneshot_mods() | get_mods()) & MOD_MASK_GUI;
 }
@@ -106,134 +108,179 @@ bool is_alt_held(void) {
     return (get_oneshot_mods() | get_mods()) & MOD_MASK_ALT;
 }
 
+void set_led_with_brightness(uint8_t led_min, uint8_t led_max, uint8_t led, uint8_t r, uint8_t g, uint8_t b) {
+    RGB_MATRIX_INDICATOR_SET_COLOR(led,
+        (r * global_brightness) / 255,
+        (g * global_brightness) / 255,
+        (b * global_brightness) / 255);
+}
+
 void keyboard_post_init_user(void) {
     rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
     rgb_matrix_sethsv_noeeprom(HSV_OFF);
 }
 
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
-    // Turn off all LEDs first
+    uint8_t layer_r = 0, layer_g = 0, layer_b = 0;
+
+    if (layer_state_is(_BASE)) {
+        layer_r = 0x20; layer_g = 0x20; layer_b = 0x40; // Dim blue
+    } else if (layer_state_is(_NUMS)) {
+        layer_r = 0x20; layer_g = 0x40; layer_b = 0x20; // Dim green
+    } else if (layer_state_is(_MODS_NAV)) {
+        layer_r = 0x40; layer_g = 0x20; layer_b = 0x20; // Dim red
+    } else if (layer_state_is(_MEDIA)) {
+        layer_r = 0x40; layer_g = 0x20; layer_b = 0x40; // Dim magenta
+    } else if (layer_state_is(_FNS)) {
+        layer_r = 0x40; layer_g = 0x40; layer_b = 0x20; // Dim yellow
+    }
+
     for (uint8_t i = 0; i < RGB_MATRIX_LED_COUNT; i++) {
-        RGB_MATRIX_INDICATOR_SET_COLOR(i, 0, 0, 0);
+        set_led_with_brightness(led_min, led_max, i, layer_r, layer_g, layer_b);
     }
 
     if (is_shift_held()) {
-        RGB_MATRIX_INDICATOR_SET_COLOR(22, 0xFF, 0xFF, 0xFF);
-        RGB_MATRIX_INDICATOR_SET_COLOR(49, 0xFF, 0xFF, 0xFF);
-        RGB_MATRIX_INDICATOR_SET_COLOR(40, 0xFF, 0xFF, 0xFF);
+        set_led_with_brightness(led_min, led_max, 22, 0xFF, 0x00, 0x00);
+        set_led_with_brightness(led_min, led_max, 49, 0xFF, 0x00, 0x00);
+        set_led_with_brightness(led_min, led_max, 40, 0xFF, 0x00, 0x00);
     }
 
     if (is_ctrl_held()) {
-        RGB_MATRIX_INDICATOR_SET_COLOR(19, 0xFF, 0xFF, 0xFF);
-        RGB_MATRIX_INDICATOR_SET_COLOR(46, 0xFF, 0xFF, 0xFF);
+        set_led_with_brightness(led_min, led_max, 19, 0xFF, 0x00, 0x00);
+        set_led_with_brightness(led_min, led_max, 46, 0xFF, 0x00, 0x00);
     }
 
     if (is_alt_held()) {
-        RGB_MATRIX_INDICATOR_SET_COLOR(16, 0xFF, 0xFF, 0xFF);
-        RGB_MATRIX_INDICATOR_SET_COLOR(43, 0xFF, 0xFF, 0xFF);
+        set_led_with_brightness(led_min, led_max, 16, 0xFF, 0x00, 0x00);
+        set_led_with_brightness(led_min, led_max, 43, 0xFF, 0x00, 0x00);
     }
 
     if (is_gui_held()) {
-        RGB_MATRIX_INDICATOR_SET_COLOR(11, 0xFF, 0xFF, 0xFF);
-        RGB_MATRIX_INDICATOR_SET_COLOR(38, 0xFF, 0xFF, 0xFF);
+        set_led_with_brightness(led_min, led_max, 11, 0xFF, 0x00, 0x00);
+        set_led_with_brightness(led_min, led_max, 38, 0xFF, 0x00, 0x00);
     }
 
-    // Highlight bracket keys across all layers
-    // Parentheses - Orange
+    // Apply custom layer-specific colors (overrides default colors)
     if (layer_state_is(_NUMS)) {
-        RGB_MATRIX_INDICATOR_SET_COLOR(45, 0xFF, 0xA5, 0x00);
-        RGB_MATRIX_INDICATOR_SET_COLOR(50, 0xFF, 0xA5, 0x00);
+        // Parentheses - Orange
+        set_led_with_brightness(led_min, led_max, 45, 0xFF, 0xA5, 0x00);
+        set_led_with_brightness(led_min, led_max, 50, 0xFF, 0xA5, 0x00);
         // FNS layer toggle - Purple
-        RGB_MATRIX_INDICATOR_SET_COLOR(34, 0x80, 0x00, 0x80);
+        set_led_with_brightness(led_min, led_max, 34, 0x80, 0x00, 0x80);
 
         // Number keys - Green
-        RGB_MATRIX_INDICATOR_SET_COLOR(22, 0x00, 0xFF, 0x00); // 1
-        RGB_MATRIX_INDICATOR_SET_COLOR(19, 0x00, 0xFF, 0x00); // 2
-        RGB_MATRIX_INDICATOR_SET_COLOR(16, 0x00, 0xFF, 0x00); // 3
-        RGB_MATRIX_INDICATOR_SET_COLOR(11, 0x00, 0xFF, 0x00); // 4
-        RGB_MATRIX_INDICATOR_SET_COLOR(8, 0x00, 0xFF, 0x00);  // 5
-        RGB_MATRIX_INDICATOR_SET_COLOR(35, 0x00, 0xFF, 0x00); // 6
-        RGB_MATRIX_INDICATOR_SET_COLOR(38, 0x00, 0xFF, 0x00); // 7
-        RGB_MATRIX_INDICATOR_SET_COLOR(43, 0x00, 0xFF, 0x00); // 8
-        RGB_MATRIX_INDICATOR_SET_COLOR(46, 0x00, 0xFF, 0x00); // 9
-        RGB_MATRIX_INDICATOR_SET_COLOR(49, 0x00, 0xFF, 0x00); // 0
+        set_led_with_brightness(led_min, led_max, 22, 0x00, 0xFF, 0x00); // 1
+        set_led_with_brightness(led_min, led_max, 19, 0x00, 0xFF, 0x00); // 2
+        set_led_with_brightness(led_min, led_max, 16, 0x00, 0xFF, 0x00); // 3
+        set_led_with_brightness(led_min, led_max, 11, 0x00, 0xFF, 0x00); // 4
+        set_led_with_brightness(led_min, led_max, 8, 0x00, 0xFF, 0x00);  // 5
+        set_led_with_brightness(led_min, led_max, 35, 0x00, 0xFF, 0x00); // 6
+        set_led_with_brightness(led_min, led_max, 38, 0x00, 0xFF, 0x00); // 7
+        set_led_with_brightness(led_min, led_max, 43, 0x00, 0xFF, 0x00); // 8
+        set_led_with_brightness(led_min, led_max, 46, 0x00, 0xFF, 0x00); // 9
+        set_led_with_brightness(led_min, led_max, 49, 0x00, 0xFF, 0x00); // 0
     }
 
     // Curly braces - Yellow
     if (layer_state_is(_NUMS) || layer_state_is(_MODS_NAV)) {
-        RGB_MATRIX_INDICATOR_SET_COLOR(39, 0xFF, 0xFF, 0x00);
-        RGB_MATRIX_INDICATOR_SET_COLOR(42, 0xFF, 0xFF, 0x00);
+        set_led_with_brightness(led_min, led_max, 39, 0xFF, 0xFF, 0x00);
+        set_led_with_brightness(led_min, led_max, 42, 0xFF, 0xFF, 0x00);
     }
 
     // Square brackets - Cyan
     if (layer_state_is(_NUMS) || layer_state_is(_MODS_NAV)) {
-        RGB_MATRIX_INDICATOR_SET_COLOR(47, 0x00, 0xFF, 0xFF);
-        RGB_MATRIX_INDICATOR_SET_COLOR(48, 0x00, 0xFF, 0xFF);
+        set_led_with_brightness(led_min, led_max, 47, 0x00, 0xFF, 0xFF);
+        set_led_with_brightness(led_min, led_max, 48, 0x00, 0xFF, 0xFF);
     }
 
     if (layer_state_is(_MODS_NAV)) {
         // Zoom controls on MODS_NAV layer - Green/Spring Green
-        RGB_MATRIX_INDICATOR_SET_COLOR(10, 0x00, 0xFF, 0x7F);
-        RGB_MATRIX_INDICATOR_SET_COLOR(17, 0x00, 0x80, 0x00);
-        RGB_MATRIX_INDICATOR_SET_COLOR(18, 0x00, 0xFF, 0x7F);
+        set_led_with_brightness(led_min, led_max, 10, 0x00, 0xFF, 0x7F);
+        set_led_with_brightness(led_min, led_max, 17, 0x00, 0x80, 0x00);
+        set_led_with_brightness(led_min, led_max, 18, 0x00, 0xFF, 0x7F);
 
         // Arrow keys on MODS_NAV layer - Red
-        RGB_MATRIX_INDICATOR_SET_COLOR(44, 0xFF, 0x00, 0x00);
-        RGB_MATRIX_INDICATOR_SET_COLOR(38, 0xFF, 0x00, 0x00);
-        RGB_MATRIX_INDICATOR_SET_COLOR(43, 0xFF, 0x00, 0x00);
-        RGB_MATRIX_INDICATOR_SET_COLOR(46, 0xFF, 0x00, 0x00);
+        set_led_with_brightness(led_min, led_max, 44, 0xFF, 0x00, 0x00);
+        set_led_with_brightness(led_min, led_max, 38, 0xFF, 0x00, 0x00);
+        set_led_with_brightness(led_min, led_max, 43, 0xFF, 0x00, 0x00);
+        set_led_with_brightness(led_min, led_max, 46, 0xFF, 0x00, 0x00);
 
         // Page Up/Down on MODS_NAV layer - Blue
-        RGB_MATRIX_INDICATOR_SET_COLOR(49, 0x00, 0x00, 0xFF);
-        RGB_MATRIX_INDICATOR_SET_COLOR(50, 0x00, 0x00, 0xFF);
+        set_led_with_brightness(led_min, led_max, 49, 0x00, 0x00, 0xFF);
+        set_led_with_brightness(led_min, led_max, 50, 0x00, 0x00, 0xFF);
 
         // IDE forward/backward on MODS_NAV layer - Purple
-        RGB_MATRIX_INDICATOR_SET_COLOR(37, 0x80, 0x00, 0x80);
-        RGB_MATRIX_INDICATOR_SET_COLOR(45, 0x80, 0x00, 0x80);
+        set_led_with_brightness(led_min, led_max, 37, 0x80, 0x00, 0x80);
+        set_led_with_brightness(led_min, led_max, 45, 0x80, 0x00, 0x80);
     }
 
     // Media controls on MEDIA layer
     if (layer_state_is(_MEDIA)) {
-        RGB_MATRIX_INDICATOR_SET_COLOR(34, 0xFF, 0xC0, 0xCB);
-        RGB_MATRIX_INDICATOR_SET_COLOR(39, 0xFF, 0x00, 0x00);
-        RGB_MATRIX_INDICATOR_SET_COLOR(42, 0x00, 0xFF, 0x00);
-        RGB_MATRIX_INDICATOR_SET_COLOR(35, 0xFF, 0xFF, 0x00);
-        RGB_MATRIX_INDICATOR_SET_COLOR(38, 0x00, 0xFF, 0x00);
-        RGB_MATRIX_INDICATOR_SET_COLOR(43, 0xFF, 0xFF, 0x00);
+        set_led_with_brightness(led_min, led_max, 34, 0xFF, 0xC0, 0xCB);
+        set_led_with_brightness(led_min, led_max, 39, 0xFF, 0x00, 0x00);
+        set_led_with_brightness(led_min, led_max, 42, 0x00, 0xFF, 0x00);
+        set_led_with_brightness(led_min, led_max, 35, 0xFF, 0xFF, 0x00);
+        set_led_with_brightness(led_min, led_max, 38, 0x00, 0xFF, 0x00);
+        set_led_with_brightness(led_min, led_max, 43, 0xFF, 0xFF, 0x00);
     }
 
     if (layer_state_is(_FNS)) {
         // Bottom row F keys (F1, F2, F3, F4) - Yellow
-        RGB_MATRIX_INDICATOR_SET_COLOR(21, 0xFF, 0xFF, 0x00);
-        RGB_MATRIX_INDICATOR_SET_COLOR(20, 0xFF, 0xFF, 0x00);
-        RGB_MATRIX_INDICATOR_SET_COLOR(15, 0xFF, 0xFF, 0x00);
-        RGB_MATRIX_INDICATOR_SET_COLOR(12, 0xFF, 0xFF, 0x00);
+        set_led_with_brightness(led_min, led_max, 21, 0xFF, 0xFF, 0x00);
+        set_led_with_brightness(led_min, led_max, 20, 0xFF, 0xFF, 0x00);
+        set_led_with_brightness(led_min, led_max, 15, 0xFF, 0xFF, 0x00);
+        set_led_with_brightness(led_min, led_max, 12, 0xFF, 0xFF, 0x00);
 
         // Middle row F keys (F5, F6, F7, F8) - F5=Red, F6-F8=Yellow
-        RGB_MATRIX_INDICATOR_SET_COLOR(22, 0xFF, 0x00, 0x00);
-        RGB_MATRIX_INDICATOR_SET_COLOR(19, 0xFF, 0xFF, 0x00);
-        RGB_MATRIX_INDICATOR_SET_COLOR(16, 0xFF, 0xFF, 0x00);
-        RGB_MATRIX_INDICATOR_SET_COLOR(11, 0xFF, 0xFF, 0x00);
+        set_led_with_brightness(led_min, led_max, 22, 0xFF, 0x00, 0x00);
+        set_led_with_brightness(led_min, led_max, 19, 0xFF, 0xFF, 0x00);
+        set_led_with_brightness(led_min, led_max, 16, 0xFF, 0xFF, 0x00);
+        set_led_with_brightness(led_min, led_max, 11, 0xFF, 0xFF, 0x00);
 
         // Top row F keys (F9, F10, F11, F12) - F9=Yellow, F10-F12=Red
-        RGB_MATRIX_INDICATOR_SET_COLOR(23, 0xFF, 0xFF, 0x00);
-        RGB_MATRIX_INDICATOR_SET_COLOR(18, 0xFF, 0x00, 0x00);
-        RGB_MATRIX_INDICATOR_SET_COLOR(17, 0xFF, 0x00, 0x00);
-        RGB_MATRIX_INDICATOR_SET_COLOR(10, 0xFF, 0x00, 0x00);
+        set_led_with_brightness(led_min, led_max, 23, 0xFF, 0xFF, 0x00);
+        set_led_with_brightness(led_min, led_max, 18, 0xFF, 0x00, 0x00);
+        set_led_with_brightness(led_min, led_max, 17, 0xFF, 0x00, 0x00);
+        set_led_with_brightness(led_min, led_max, 10, 0xFF, 0x00, 0x00);
 
         // RGB lighting controls - Right side
-        RGB_MATRIX_INDICATOR_SET_COLOR(36, 0xFF, 0x00, 0x00);
-        RGB_MATRIX_INDICATOR_SET_COLOR(37, 0x80, 0x80, 0x80);
-        RGB_MATRIX_INDICATOR_SET_COLOR(44, 0xFF, 0xFF, 0xFF);
+        set_led_with_brightness(led_min, led_max, 36, 0xFF, 0x00, 0x00);
+        set_led_with_brightness(led_min, led_max, 37, 0x80, 0x80, 0x80);
+        set_led_with_brightness(led_min, led_max, 44, 0xFF, 0xFF, 0xFF);
 
         // BASE layer toggle - Right side
-        RGB_MATRIX_INDICATOR_SET_COLOR(24, 0x80, 0x00, 0x80);
+        set_led_with_brightness(led_min, led_max, 24, 0x80, 0x00, 0x80);
     }
 
     return true;
 }
 
 #endif
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case QK_RGB_MATRIX_VALUE_DOWN:
+            if (record->event.pressed) {
+                if (global_brightness > 16) {
+                    global_brightness -= 16;
+                } else {
+                    global_brightness = 0;
+                }
+            }
+            return false;
+
+        case QK_RGB_MATRIX_VALUE_UP:
+            if (record->event.pressed) {
+                if (global_brightness < 239) {
+                    global_brightness += 16;
+                } else {
+                    global_brightness = 255;
+                }
+            }
+            return false;
+    }
+    return true;
+}
 
 #ifdef OLED_ENABLE
 
