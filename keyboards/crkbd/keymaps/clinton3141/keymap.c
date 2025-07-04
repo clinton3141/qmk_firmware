@@ -294,20 +294,45 @@ bool oled_task_user(void) {
     bool shift_active = (mods | oneshot) & MOD_MASK_SHIFT;
     bool any_active = gui_active || alt_active || ctrl_active || shift_active;
 
-    if (!any_active) {
-        oled_off();
-        return false;
-    }
-
-    oled_on();
     oled_clear();
 
-    // TODO: use pictures instead of text.
-    // @see https://joric.github.io/qle/
-    oled_write_P(PSTR(" CTL             \n"), ctrl_active);
-    oled_write_P(PSTR("     OPT         \n"), alt_active);
-    oled_write_P(PSTR("         CMD     \n"), gui_active);
-    oled_write_P(PSTR("             SFT \n"), shift_active);
+    if (layer_state_is(_FNS)) {
+        // Display function key layout (accounting for 90° rotation)
+        oled_write_P(PSTR("F1 "), false);
+        oled_write_P(PSTR("F5"), true);  // Inverted
+        oled_write_P(PSTR(" F9        \n"), false);
+        oled_write_P(PSTR("F2 F6 "), false);
+        oled_write_P(PSTR("F10"), true);  // Inverted
+        oled_write_P(PSTR("       \n"), false);
+        oled_write_P(PSTR("F3 F7 "), false);
+        oled_write_P(PSTR("F11"), true);  // Inverted
+        oled_write_P(PSTR("       \n"), false);
+        oled_write_P(PSTR("F4 F8 "), false);
+        oled_write_P(PSTR("F12"), true);  // Inverted
+        oled_write_P(PSTR("       \n"), false);
+    } else if (layer_state_is(_NUMS)) {
+        oled_write_P(PSTR("       NUMS     \n"), false);
+        oled_write_P(PSTR("                \n"), false);
+        oled_write_P(PSTR("                \n"), false);
+        oled_write_P(PSTR("                \n"), false);
+    } else if (layer_state_is(_MODS_NAV)) {
+        oled_write_P(PSTR("    MODS/NAV    \n"), false);
+        oled_write_P(PSTR("                \n"), false);
+        oled_write_P(PSTR("                \n"), false);
+        oled_write_P(PSTR("                \n"), false);
+    } else if (layer_state_is(_MEDIA)) {
+        oled_write_P(PSTR("      MEDIA     \n"), false);
+        oled_write_P(PSTR("                \n"), false);
+        oled_write_P(PSTR("                \n"), false);
+        oled_write_P(PSTR("                \n"), false);
+    } else if (layer_state_is(_BASE) && any_active) {
+        // Display modifier keys if no layer is active
+        // make these only display
+        oled_write_P(PSTR(" CTL             \n"), ctrl_active);
+        oled_write_P(PSTR("     OPT         \n"), alt_active);
+        oled_write_P(PSTR("         CMD     \n"), gui_active);
+        oled_write_P(PSTR("             SFT \n"), shift_active);
+    }
 
     return false;
 }
