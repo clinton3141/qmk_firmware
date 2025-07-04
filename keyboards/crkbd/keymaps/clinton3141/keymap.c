@@ -109,6 +109,7 @@ bool is_alt_held(void) {
 }
 
 void set_led_with_brightness(uint8_t led_min, uint8_t led_max, uint8_t led, uint8_t r, uint8_t g, uint8_t b) {
+    // TODO: this only affects the master side of the board
     RGB_MATRIX_INDICATOR_SET_COLOR(led,
         (r * global_brightness) / 255,
         (g * global_brightness) / 255,
