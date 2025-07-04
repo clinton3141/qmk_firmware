@@ -21,11 +21,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #pragma once
 
 #ifdef OLED_ENABLE
-    #define OLED_BRIGHTNESS 1
+    #define OLED_BRIGHTNESS .3
 #endif
 
 #define MOUSEKEY_MAX_SPEED 2
 #define MOUSEKEY_TIME_TO_MAX 20
+
+#define RGB_MATRIX_TIMEOUT 10000
 
 //#define USE_MATRIX_I2C
 
