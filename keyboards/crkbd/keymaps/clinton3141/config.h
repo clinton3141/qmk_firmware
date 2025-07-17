@@ -29,11 +29,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define RGB_MATRIX_TIMEOUT 10000
 
-//#define USE_MATRIX_I2C
-
 #define TAPPING_TERM 200
 #define PERMISSIVE_HOLD
 #define QUICK_TAP_TERM 120
+#define CHORDAL_HOLD
+#define FLOW_TAP_TERM 150
 
 #ifdef RGB_MATRIX_ENABLE
 #   define RGB_MATRIX_SLEEP // turn off effects when suspended
