@@ -29,7 +29,7 @@ enum layers {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_BASE] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-      KC_ESC,           KC_Q,             KC_W,             KC_F,             KC_P,             KC_B,                         KC_J,             KC_L,             KC_U,             KC_Y,             KC_SCLN,          KC_BSLS,
+      KC_ESC,           KC_Q,             KC_W,             KC_F,             KC_P,             KC_B,                         KC_J,             KC_L,             KC_U,             KC_Y,             KC_SCLN,          MO(_FNS),
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_TAB,           LSFT_T(KC_A),     LCTL_T(KC_R),     LALT_T(KC_S),     LGUI_T(KC_T),     KC_G,                         KC_M,             RGUI_T(KC_N),     RALT_T(KC_E),     RCTL_T(KC_I),     RSFT_T(KC_O),     KC_QUOT,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -45,7 +45,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       _______,          KC_1,             KC_2,             KC_3,             KC_4,             KC_5,                         KC_6,             KC_7,             KC_8,             KC_9,             KC_0,             KC_GT,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______,          KC_UNDS,          KC_MINS,          KC_PLUS,          KC_EQL,           XXXXXXX,                      TO(_FNS),         KC_LCBR,          KC_RCBR,          KC_LBRC,          KC_RBRC,          KC_LT,
+      _______,          KC_UNDS,          KC_MINS,          KC_PLUS,          KC_EQL,           XXXXXXX,                      XXXXXXX,          KC_LCBR,          KC_RCBR,          KC_LBRC,          KC_RBRC,          KC_LT,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                                           _______,          _______,          _______,          _______,          _______,          _______
                                                       //`--------------------------'  `--------------------------'
@@ -77,7 +77,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_FNS] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-      TO(_BASE),        KC_F9,            KC_F10,           KC_F11,           KC_F12,           XXXXXXX,                      QK_RGB_MATRIX_TOGGLE, QK_RGB_MATRIX_VALUE_DOWN, QK_RGB_MATRIX_VALUE_UP, XXXXXXX, XXXXXXX,          XXXXXXX,
+      XXXXXXX,          KC_F9,            KC_F10,           KC_F11,           KC_F12,           XXXXXXX,                      QK_RGB_MATRIX_TOGGLE, QK_RGB_MATRIX_VALUE_DOWN, QK_RGB_MATRIX_VALUE_UP, XXXXXXX, XXXXXXX,          XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       XXXXXXX,          KC_F5,            KC_F6,            KC_F7,            KC_F8,            XXXXXXX,                      XXXXXXX,          XXXXXXX,          XXXXXXX,          XXXXXXX,          XXXXXXX,          XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -87,15 +87,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                       //`--------------------------'  `--------------------------'
     )
 };
-
-// Chordal Hold: Define handedness for opposite-hands rule
-const char chordal_hold_layout[MATRIX_ROWS][MATRIX_COLS] PROGMEM =
-    LAYOUT_split_3x6_3(
-        'L', 'L', 'L', 'L', 'L', 'L',  'R', 'R', 'R', 'R', 'R', 'R',
-        'L', 'L', 'L', 'L', 'L', 'L',  'R', 'R', 'R', 'R', 'R', 'R',
-        'L', 'L', 'L', 'L', 'L', 'L',  'R', 'R', 'R', 'R', 'R', 'R',
-                   'L', 'L', 'L',      'R', 'R', 'R'
-    );
 
 #ifdef RGB_MATRIX_ENABLE
 
@@ -175,8 +166,6 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         // Parentheses - Orange
         set_led_with_brightness(led_min, led_max, 45, 0xFF, 0xA5, 0x00);
         set_led_with_brightness(led_min, led_max, 50, 0xFF, 0xA5, 0x00);
-        // FNS layer toggle - Purple
-        set_led_with_brightness(led_min, led_max, 34, 0x80, 0x00, 0x80);
 
         // Number keys - Green
         set_led_with_brightness(led_min, led_max, 22, 0x00, 0xFF, 0x00); // 1
@@ -257,9 +246,6 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         set_led_with_brightness(led_min, led_max, 36, 0xFF, 0x00, 0x00);
         set_led_with_brightness(led_min, led_max, 37, 0x80, 0x80, 0x80);
         set_led_with_brightness(led_min, led_max, 44, 0xFF, 0xFF, 0xFF);
-
-        // BASE layer toggle - Right side
-        set_led_with_brightness(led_min, led_max, 24, 0x80, 0x00, 0x80);
     }
 
     return true;
