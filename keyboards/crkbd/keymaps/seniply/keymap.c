@@ -65,6 +65,162 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     )
 };
 
+#ifdef RGB_MATRIX_ENABLE
+
+static uint8_t global_brightness = 128;
+
+bool is_gui_held(void) {
+    return (get_oneshot_mods() | get_mods()) & MOD_MASK_GUI;
+}
+
+bool is_shift_held(void) {
+    return (get_oneshot_mods() | get_mods()) & MOD_MASK_SHIFT;
+}
+
+bool is_ctrl_held(void) {
+    return (get_oneshot_mods() | get_mods()) & MOD_MASK_CTRL;
+}
+
+bool is_alt_held(void) {
+    return (get_oneshot_mods() | get_mods()) & MOD_MASK_ALT;
+}
+
+void set_led_with_brightness(uint8_t led_min, uint8_t led_max, uint8_t led, uint8_t r, uint8_t g, uint8_t b) {
+    RGB_MATRIX_INDICATOR_SET_COLOR(led,
+        (r * global_brightness) / 255,
+        (g * global_brightness) / 255,
+        (b * global_brightness) / 255);
+}
+
+void keyboard_post_init_user(void) {
+    rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
+    rgb_matrix_sethsv_noeeprom(HSV_OFF);
+}
+
+bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+    uint8_t layer_r = 0, layer_g = 0, layer_b = 0;
+
+    if (layer_state_is(_BASE)) {
+        layer_r = 0x20; layer_g = 0x20; layer_b = 0x40; // Dim blue
+    } else if (layer_state_is(_QWERTY)) {
+        layer_r = 0x40; layer_g = 0x20; layer_b = 0x40; // Dim purple
+    } else if (layer_state_is(_SYMBOLS)) {
+        layer_r = 0x40; layer_g = 0x40; layer_b = 0x20; // Dim yellow/amber
+    } else if (layer_state_is(_NUMBERS)) {
+        layer_r = 0x20; layer_g = 0x40; layer_b = 0x20; // Dim green
+    } else if (layer_state_is(_EXTEND)) {
+        layer_r = 0x40; layer_g = 0x20; layer_b = 0x20; // Dim red
+    } else if (layer_state_is(_FUNCTION)) {
+        layer_r = 0x40; layer_g = 0x20; layer_b = 0x40; // Dim magenta
+    }
+
+    for (uint8_t i = 0; i < RGB_MATRIX_LED_COUNT; i++) {
+        set_led_with_brightness(led_min, led_max, i, layer_r, layer_g, layer_b);
+    }
+
+    // Modifiers
+    if (is_shift_held()) {
+        // Highlight Shift keys (approximate positions)
+        set_led_with_brightness(led_min, led_max, 21, 0xFF, 0xFF, 0xFF); // Left Shift pos
+        set_led_with_brightness(led_min, led_max, 44, 0xFF, 0xFF, 0xFF); // Right Shift pos
+    }
+    if (is_ctrl_held()) {
+        set_led_with_brightness(led_min, led_max, 22, 0x00, 0x00, 0xFF); // Left Ctrl pos
+    }
+    if (is_alt_held()) {
+        set_led_with_brightness(led_min, led_max, 23, 0xFF, 0xFF, 0x00); // Left Alt pos
+    }
+    if (is_gui_held()) {
+        set_led_with_brightness(led_min, led_max, 24, 0x80, 0x00, 0x80); // Left GUI pos
+    }
+
+    if (layer_state_is(_NUMBERS)) {
+        // Numpad on Right Hand
+        // 7 8 9 (Top)
+        set_led_with_brightness(led_min, led_max, 38, 0x00, 0xFF, 0x00); // 7
+        set_led_with_brightness(led_min, led_max, 43, 0x00, 0xFF, 0x00); // 8
+        set_led_with_brightness(led_min, led_max, 46, 0x00, 0xFF, 0x00); // 9
+        // 4 5 6 (Mid)
+        set_led_with_brightness(led_min, led_max, 39, 0x00, 0xFF, 0x00); // 4
+        set_led_with_brightness(led_min, led_max, 42, 0x00, 0xFF, 0x00); // 5
+        set_led_with_brightness(led_min, led_max, 45, 0x00, 0xFF, 0x00); // 6
+        // 1 2 3 (Bot)
+        set_led_with_brightness(led_min, led_max, 40, 0x00, 0xFF, 0x00); // 1
+        set_led_with_brightness(led_min, led_max, 41, 0x00, 0xFF, 0x00); // 2
+        set_led_with_brightness(led_min, led_max, 44, 0x00, 0xFF, 0x00); // 3
+        // 0 (Bot Inner)
+        set_led_with_brightness(led_min, led_max, 33, 0x00, 0xFF, 0x00); // 0
+        
+        // Operators
+        set_led_with_brightness(led_min, led_max, 49, 0xFF, 0xA5, 0x00); // + (Top Pinky)
+        set_led_with_brightness(led_min, led_max, 48, 0xFF, 0xA5, 0x00); // - (Mid Pinky)
+        set_led_with_brightness(led_min, led_max, 47, 0xFF, 0xA5, 0x00); // / (Bot Pinky)
+    }
+
+    if (layer_state_is(_EXTEND)) {
+        // Arrow Keys (Right Hand)
+        set_led_with_brightness(led_min, led_max, 43, 0xFF, 0x00, 0x00); // Up (Top Middle)
+        set_led_with_brightness(led_min, led_max, 39, 0xFF, 0x00, 0x00); // Left (Mid Index)
+        set_led_with_brightness(led_min, led_max, 42, 0xFF, 0x00, 0x00); // Down (Mid Middle)
+        set_led_with_brightness(led_min, led_max, 45, 0xFF, 0x00, 0x00); // Right (Mid Ring)
+        
+        // Home/End/PgUp/PgDn
+        set_led_with_brightness(led_min, led_max, 38, 0x00, 0x00, 0xFF); // PgUp (Top Index)
+        set_led_with_brightness(led_min, led_max, 46, 0x00, 0x00, 0xFF); // End (Top Ring)
+        set_led_with_brightness(led_min, led_max, 40, 0x00, 0x00, 0xFF); // PgDn (Bot Index)
+        set_led_with_brightness(led_min, led_max, 41, 0x00, 0x00, 0xFF); // Home (Bot Middle - wait, Home is Top Middle in layout?)
+    }
+
+    if (layer_state_is(_FUNCTION)) {
+        // F-Keys (Right Hand in Seniply layout)
+        // F7 F8 F9 (Top)
+        set_led_with_brightness(led_min, led_max, 38, 0xFF, 0x00, 0x00); // F7
+        set_led_with_brightness(led_min, led_max, 43, 0xFF, 0xFF, 0x00); // F8
+        set_led_with_brightness(led_min, led_max, 46, 0xFF, 0xFF, 0x00); // F9
+        // F4 F5 F6 (Mid)
+        set_led_with_brightness(led_min, led_max, 39, 0xFF, 0xFF, 0x00); // F4
+        set_led_with_brightness(led_min, led_max, 42, 0xFF, 0x00, 0x00); // F5
+        set_led_with_brightness(led_min, led_max, 45, 0xFF, 0xFF, 0x00); // F6
+        // F1 F2 F3 (Bot)
+        set_led_with_brightness(led_min, led_max, 40, 0xFF, 0xFF, 0x00); // F1
+        set_led_with_brightness(led_min, led_max, 41, 0xFF, 0xFF, 0x00); // F2
+        set_led_with_brightness(led_min, led_max, 44, 0xFF, 0xFF, 0x00); // F3
+        // F10 F11 F12 (Inner)
+        set_led_with_brightness(led_min, led_max, 33, 0xFF, 0x00, 0x00); // F10
+        set_led_with_brightness(led_min, led_max, 34, 0xFF, 0x00, 0x00); // F11
+        set_led_with_brightness(led_min, led_max, 35, 0xFF, 0x00, 0x00); // F12
+    }
+
+    return true;
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case EXT_BRI:
+            if (record->event.pressed) {
+                if (global_brightness < 239) {
+                    global_brightness += 16;
+                } else {
+                    global_brightness = 255;
+                }
+            }
+            return false;
+
+        case EXT_BRD:
+            if (record->event.pressed) {
+                if (global_brightness > 16) {
+                    global_brightness -= 16;
+                } else {
+                    global_brightness = 0;
+                }
+            }
+            return false;
+    }
+    return true;
+}
+
+#endif
+
 #ifdef OLED_ENABLE
 bool oled_task_user(void) {
     oled_clear();
