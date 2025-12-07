@@ -20,6 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 enum layers {
     _BASE,
+    _QWERTY,
     _NUMS,
     _MODS_NAV,
     _MEDIA,
@@ -34,6 +35,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       KC_TAB,           LSFT_T(KC_A),     LCTL_T(KC_R),     LALT_T(KC_S),     LGUI_T(KC_T),     KC_G,                         KC_M,             RGUI_T(KC_N),     RALT_T(KC_E),     RCTL_T(KC_I),     RSFT_T(KC_O),     KC_QUOT,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_GRAVE,         KC_Z,             KC_X,             KC_C,             KC_D,             KC_V,                         KC_K,             KC_H,             KC_COMM,          KC_DOT,           KC_SLSH,          KC_BSLS,
+  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                                          MO(_MEDIA),       KC_SPC,           MO(_MODS_NAV),    LT(_NUMS, KC_ENT), KC_LSFT,          KC_BSPC
+                                                      //`--------------------------'  `--------------------------'
+    ),
+
+    [_QWERTY] = LAYOUT_split_3x6_3(
+  //,-----------------------------------------------------.                    ,-----------------------------------------------------.
+      KC_ESC,           KC_Q,             KC_W,             KC_E,             KC_R,             KC_T,                         KC_Y,             KC_U,             KC_I,             KC_O,             KC_P,             MO(_FNS),
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      KC_TAB,           LSFT_T(KC_A),     LCTL_T(KC_S),     LALT_T(KC_D),     LGUI_T(KC_F),     KC_G,                         KC_H,             RGUI_T(KC_J),     RALT_T(KC_K),     RCTL_T(KC_L),     RSFT_T(KC_SCLN),  KC_QUOT,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      KC_GRAVE,         KC_Z,             KC_X,             KC_C,             KC_V,             KC_B,                         KC_N,             KC_M,             KC_COMM,          KC_DOT,           KC_SLSH,          KC_BSLS,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                                           MO(_MEDIA),       KC_SPC,           MO(_MODS_NAV),    LT(_NUMS, KC_ENT), KC_LSFT,          KC_BSPC
                                                       //`--------------------------'  `--------------------------'
@@ -77,7 +90,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_FNS] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-      XXXXXXX,          KC_F9,            KC_F10,           KC_F11,           KC_F12,           XXXXXXX,                      QK_RGB_MATRIX_TOGGLE, QK_RGB_MATRIX_VALUE_DOWN, QK_RGB_MATRIX_VALUE_UP, XXXXXXX, XXXXXXX,          XXXXXXX,
+      XXXXXXX,          KC_F9,            KC_F10,           KC_F11,           KC_F12,           XXXXXXX,                      QK_RGB_MATRIX_TOGGLE, QK_RGB_MATRIX_VALUE_DOWN, QK_RGB_MATRIX_VALUE_UP, DF(_BASE), DF(_QWERTY),     XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       XXXXXXX,          KC_F5,            KC_F6,            KC_F7,            KC_F8,            XXXXXXX,                      XXXXXXX,          XXXXXXX,          XXXXXXX,          XXXXXXX,          XXXXXXX,          XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -124,9 +137,11 @@ void keyboard_post_init_user(void) {
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     uint8_t layer_r = 0, layer_g = 0, layer_b = 0;
 
-    if (layer_state_is(_BASE)) {
-        layer_r = 0x20; layer_g = 0x20; layer_b = 0x40; // Dim blue
-    } else if (layer_state_is(_NUMS)) {
+    // Set base layer color
+    layer_r = 0x20; layer_g = 0x20; layer_b = 0x40; // Dim blue
+
+    // Override with active layer colors
+    if (layer_state_is(_NUMS)) {
         layer_r = 0x20; layer_g = 0x40; layer_b = 0x20; // Dim green
     } else if (layer_state_is(_MODS_NAV)) {
         layer_r = 0x40; layer_g = 0x20; layer_b = 0x20; // Dim red
@@ -246,6 +261,10 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         set_led_with_brightness(led_min, led_max, 36, 0xFF, 0x00, 0x00);
         set_led_with_brightness(led_min, led_max, 37, 0x80, 0x80, 0x80);
         set_led_with_brightness(led_min, led_max, 44, 0xFF, 0xFF, 0xFF);
+
+        // Default layer switches
+        set_led_with_brightness(led_min, led_max, 45, 0x20, 0x20, 0x40);
+        set_led_with_brightness(led_min, led_max, 50, 0x20, 0x20, 0x40);
     }
 
     return true;
@@ -290,22 +309,38 @@ bool oled_task_user(void) {
     bool shift_active = (mods | oneshot) & MOD_MASK_SHIFT;
     bool any_active = gui_active || alt_active || ctrl_active || shift_active;
 
+    uint8_t default_layer = get_highest_layer(default_layer_state);
+
     oled_clear();
 
     if (layer_state_is(_FNS)) {
-        // Display function key layout (accounting for 90° rotation)
-        oled_write_P(PSTR("F1 "), false);
-        oled_write_P(PSTR("F5"), true);  // Inverted
-        oled_write_P(PSTR(" F9        \n"), false);
-        oled_write_P(PSTR("F2 F6 "), false);
-        oled_write_P(PSTR("F10"), true);  // Inverted
-        oled_write_P(PSTR("       \n"), false);
-        oled_write_P(PSTR("F3 F7 "), false);
-        oled_write_P(PSTR("F11"), true);  // Inverted
-        oled_write_P(PSTR("       \n"), false);
-        oled_write_P(PSTR("F4 F8 "), false);
-        oled_write_P(PSTR("F12"), true);  // Inverted
-        oled_write_P(PSTR("       \n"), false);
+        if (default_layer == _QWERTY) {
+            oled_write_P(PSTR("F1 "), false);
+            oled_write_P(PSTR("F5"), true);  // Inverted
+            oled_write_P(PSTR(" F9     qwe\n"), false);
+            oled_write_P(PSTR("F2 F6 "), false);
+            oled_write_P(PSTR("F10"), true);  // Inverted
+            oled_write_P(PSTR("    rty\n"), false);
+            oled_write_P(PSTR("F3 F7 "), false);
+            oled_write_P(PSTR("F11"), true);  // Inverted
+            oled_write_P(PSTR("       \n"), false);
+            oled_write_P(PSTR("F4 F8 "), false);
+            oled_write_P(PSTR("F12"), true);  // Inverted
+            oled_write_P(PSTR("       \n"), false);
+        } else {
+            oled_write_P(PSTR("F1 "), false);
+            oled_write_P(PSTR("F5"), true);  // Inverted
+            oled_write_P(PSTR(" F9    cole\n"), false);
+            oled_write_P(PSTR("F2 F6 "), false);
+            oled_write_P(PSTR("F10"), true);  // Inverted
+            oled_write_P(PSTR("    mak\n"), false);
+            oled_write_P(PSTR("F3 F7 "), false);
+            oled_write_P(PSTR("F11"), true);  // Inverted
+            oled_write_P(PSTR("       \n"), false);
+            oled_write_P(PSTR("F4 F8 "), false);
+            oled_write_P(PSTR("F12"), true);  // Inverted
+            oled_write_P(PSTR("       \n"), false);
+        }
     } else if (layer_state_is(_NUMS)) {
         oled_write_P(PSTR("       NUMS     \n"), false);
         oled_write_P(PSTR("                \n"), false);
@@ -321,9 +356,7 @@ bool oled_task_user(void) {
         oled_write_P(PSTR("                \n"), false);
         oled_write_P(PSTR("                \n"), false);
         oled_write_P(PSTR("                \n"), false);
-    } else if (layer_state_is(_BASE) && any_active) {
-        // Display modifier keys if no layer is active
-        // make these only display
+    } else if (any_active) {
         oled_write_P(PSTR(" CTL             \n"), ctrl_active);
         oled_write_P(PSTR("     OPT         \n"), alt_active);
         oled_write_P(PSTR("         CMD     \n"), gui_active);
