@@ -19,8 +19,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include QMK_KEYBOARD_H
 
 enum layers {
-    _BASE,
     _QWERTY,
+    _COLEMAK,
     _NUMS,
     _MODS_NAV,
     _MEDIA,
@@ -28,18 +28,6 @@ enum layers {
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    [_BASE] = LAYOUT_split_3x6_3(
-  //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-      KC_ESC,           KC_Q,             KC_W,             KC_F,             KC_P,             KC_B,                         KC_J,             KC_L,             KC_U,             KC_Y,             KC_SCLN,          MO(_FNS),
-  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_TAB,           LSFT_T(KC_A),     LCTL_T(KC_R),     LALT_T(KC_S),     LGUI_T(KC_T),     KC_G,                         KC_M,             RGUI_T(KC_N),     RALT_T(KC_E),     RCTL_T(KC_I),     RSFT_T(KC_O),     KC_QUOT,
-  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_GRAVE,         KC_Z,             KC_X,             KC_C,             KC_D,             KC_V,                         KC_K,             KC_H,             KC_COMM,          KC_DOT,           KC_SLSH,          KC_BSLS,
-  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                                          MO(_MEDIA),       KC_SPC,           MO(_MODS_NAV),    LT(_NUMS, KC_ENT), KC_LSFT,          KC_BSPC
-                                                      //`--------------------------'  `--------------------------'
-    ),
-
     [_QWERTY] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
       KC_ESC,           KC_Q,             KC_W,             KC_E,             KC_R,             KC_T,                         KC_Y,             KC_U,             KC_I,             KC_O,             KC_P,             MO(_FNS),
@@ -51,6 +39,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                           MO(_MEDIA),       KC_SPC,           MO(_MODS_NAV),    LT(_NUMS, KC_ENT), KC_LSFT,          KC_BSPC
                                                       //`--------------------------'  `--------------------------'
     ),
+
+    [_COLEMAK] = LAYOUT_split_3x6_3(
+  //,-----------------------------------------------------.                    ,-----------------------------------------------------.
+      KC_ESC,           KC_Q,             KC_W,             KC_F,             KC_P,             KC_B,                         KC_J,             KC_L,             KC_U,             KC_Y,             KC_SCLN,          MO(_FNS),
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      KC_TAB,           LSFT_T(KC_A),     LCTL_T(KC_R),     LALT_T(KC_S),     LGUI_T(KC_T),     KC_G,                         KC_M,             RGUI_T(KC_N),     RALT_T(KC_E),     RCTL_T(KC_I),     RSFT_T(KC_O),     KC_QUOT,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      KC_GRAVE,         KC_Z,             KC_X,             KC_C,             KC_D,             KC_V,                         KC_K,             KC_H,             KC_COMM,          KC_DOT,           KC_SLSH,          KC_BSLS,
+  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                                          MO(_MEDIA),       KC_SPC,           MO(_MODS_NAV),    LT(_NUMS, KC_ENT), KC_LSFT,          KC_BSPC
+                                                      //`--------------------------'  `--------------------------'
+    ),
+
+
 
     [_NUMS] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
@@ -90,7 +92,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_FNS] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-      XXXXXXX,          KC_F9,            KC_F10,           KC_F11,           KC_F12,           XXXXXXX,                      QK_RGB_MATRIX_TOGGLE, QK_RGB_MATRIX_VALUE_DOWN, QK_RGB_MATRIX_VALUE_UP, DF(_BASE), DF(_QWERTY),     XXXXXXX,
+      XXXXXXX,          KC_F9,            KC_F10,           KC_F11,           KC_F12,           XXXXXXX,                      QK_RGB_MATRIX_TOGGLE, QK_RGB_MATRIX_VALUE_DOWN, QK_RGB_MATRIX_VALUE_UP, DF(_COLEMAK), DF(_QWERTY),     XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       XXXXXXX,          KC_F5,            KC_F6,            KC_F7,            KC_F8,            XXXXXXX,                      XXXXXXX,          XXXXXXX,          XXXXXXX,          XXXXXXX,          XXXXXXX,          XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
